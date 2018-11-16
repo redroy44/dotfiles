@@ -11,7 +11,7 @@ if isdirectory('/usr/local/opt/fzf')
       Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
   else
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-          Plug 'junegunn/fzf.vim'
+        Plug 'junegunn/fzf.vim'
       endif
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
@@ -20,8 +20,8 @@ Plug 'mattn/emmet-vim'
 
 call plug#end()
 
-let g:python_host_prog = '/home/piotrek/anaconda3/envs/neovim2/bin/python2'
-let g:python3_host_prog = '/home/piotrek/anaconda3/envs/neovim3/bin/python3'
+let g:python_host_prog = '/usr/bin/python2'
+let g:python3_host_prog = '/usr/bin/python3'
 
 map <F2> :NERDTreeToggle<CR>
 
@@ -110,7 +110,7 @@ let g:jedi#smart_auto_mappings = 0
  let g:syntastic_style_warning_symbol = '⚠'
  let g:syntastic_auto_loc_list=1
  let g:syntastic_aggregate_errors = 1
- let g:syntastic_python_checkers=['python', 'flake8']
+ let g:syntastic_python_checkers=['python', 'pylint']
 
  " emmet
  "let g:user_emmet_leader_key='<C-Z>'
