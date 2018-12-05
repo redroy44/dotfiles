@@ -18,6 +18,9 @@ Plug 'zchee/deoplete-jedi'
 Plug 'scrooloose/syntastic'
 Plug 'mattn/emmet-vim'
 
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'Yggdroot/indentLine'
+
 call plug#end()
 
 let g:python_host_prog = '/usr/bin/python2'
@@ -29,6 +32,9 @@ syntax enable
 set termguicolors
 set background=dark
 colorscheme NeoSolarized
+"Invisible character colors
+highlight NonText guifg=#4a4a59
+highlight SpecialKey guifg=#4a4a59
 
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -56,7 +62,14 @@ set showmatch
 set nobackup
 set noswapfile
 
-"" Map leader to ,
+"show eol and tab
+set list listchars=tab:>\ ,trail:-,eol:¬
+
+let g:indentLine_char = '¦'
+let g:better_whitespace_enabled=0
+let g:strip_whitespace_on_save=1
+
+" Map leader to ,
 let mapleader=','
 
 inoremap <C-Space> <C-n>
@@ -90,17 +103,6 @@ let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/
 let g:deoplete#enable_at_startup = 1
 " close preview window on leaving the insert mode
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" jedi-vim
-let g:jedi#popup_on_dot = 0
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>d"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#rename_command = "<leader>r"
-let g:jedi#show_call_signatures = "0"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#smart_auto_mappings = 0
 
 " syntastic
  let g:syntastic_always_populate_loc_list=1
