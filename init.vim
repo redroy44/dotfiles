@@ -13,9 +13,10 @@ if isdirectory('/usr/local/opt/fzf')
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
         Plug 'junegunn/fzf.vim'
       endif
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi'
-Plug 'scrooloose/syntastic'
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'zchee/deoplete-jedi'
+Plug 'scrooloose/syntastic' " replace with ale
+Plug 'tpope/vim-fugitive'
 Plug 'mattn/emmet-vim'
 
 Plug 'ntpeters/vim-better-whitespace'
@@ -23,8 +24,8 @@ Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
-let g:python_host_prog = '/usr/bin/python2'
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python_host_prog = '/Users/pbandurski/.pyenv/versions/2.7.12/bin/python2'
+let g:python3_host_prog = '/Users/pbandurski/.pyenv/versions/3.6.5/bin/python3'
 
 map <F2> :NERDTreeToggle<CR>
 
@@ -36,8 +37,8 @@ colorscheme NeoSolarized
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
 
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let g:NERDTreeShowBookmarks=1
 
 set number
@@ -92,6 +93,7 @@ let g:airline#extensions#virtualenv#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#branch#enabled = 1
 
 " fzf.vim
 set wildmode=list:longest,list:full
@@ -114,5 +116,11 @@ autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
  let g:syntastic_aggregate_errors = 1
  let g:syntastic_python_checkers=['python', 'pylint']
 
+" kite
+let g:kite_tab_complete=1
+set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
+set laststatus=2  " always display the status line<Paste>
+
  " emmet
  "let g:user_emmet_leader_key='<C-Z>'
+ "
