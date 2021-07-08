@@ -5,34 +5,36 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 
 Plug 'scrooloose/nerdtree'
 Plug 'iCyMind/NeoSolarized'
+Plug 'arcticicestudio/nord-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 if isdirectory('/usr/local/opt/fzf')
-      Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-  else
-        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-        Plug 'junegunn/fzf.vim'
-      endif
-"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'zchee/deoplete-jedi'
-Plug 'scrooloose/syntastic' " replace with ale
+  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+else
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  Plug 'junegunn/fzf.vim'
+endif
+Plug 'derekwyatt/vim-scala'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neomake/neomake'
+Plug 'tpope/vim-commentary'
+"Plug 'scrooloose/syntastic' " replace with ale
 Plug 'tpope/vim-fugitive'
-Plug 'mattn/emmet-vim'
+Plug 'jiangmiao/auto-pairs'
 
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
-let g:python_host_prog = '/Users/pbandurski/.pyenv/versions/2.7.12/bin/python2'
-let g:python3_host_prog = '/Users/pbandurski/.pyenv/versions/3.6.5/bin/python3'
+let g:python_host_prog = '/usr/local/bin/python2'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 map <F2> :NERDTreeToggle<CR>
 
 syntax enable
 set termguicolors
-set background=dark
-colorscheme NeoSolarized
+colorscheme nord
 "Invisible character colors
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
@@ -45,10 +47,10 @@ set number
 set ruler
 set wildchar=<Tab> wildmenu wildmode=full
 
-set tabstop=4        " Sets the tab size to 4
+set tabstop=2        " Sets the tab size to 4
                      " (tabs are usually 8 spaces)
 set expandtab        " Tab key inserts spaces instead of tabs
-set shiftwidth=4     " Sets spaces used for (auto)indent
+set shiftwidth=2     " Sets spaces used for (auto)indent
 set shiftround       " Indent to nearest tabstop
 set autoindent       " Carries over previous indent to the next line
 set smarttab
@@ -62,6 +64,8 @@ set showmatch
 "" Directories for swp files
 set nobackup
 set noswapfile
+
+set autowrite
 
 "show eol and tab
 set list listchars=tab:>\ ,trail:-,eol:¬
@@ -85,42 +89,75 @@ map <C-l> <C-W>l
 " fzf remaps
 nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>e :FZF -m<CR>
+nnoremap <silent> <leader>t :Tags<CR>
+
+"commentary
+map <C-/> :Commentary<CR>
 
 "vim-airline
-let g:airline_theme='solarized'
-let g:airline_solarized_bg='dark'
+let g:airline_theme='nord'
 let g:airline#extensions#virtualenv#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#coc#enabled = 1
+let g:airline#extensions#neomake#enabled = 1
 
 " fzf.vim
 set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
+set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__,node_modules
+let g:fzf_tags_command = 'ctags -R --exclude=@.gitignore'
+let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'project/target/**' -prune -o -path 'target/**' -prune -o -path 'project/project/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
 
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
 
-"deoplete.vim
-let g:deoplete#enable_at_startup = 1
 " close preview window on leaving the insert mode
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" vim-scala
+au BufRead,BufNewFile *.sbt set filetype=scala
 
-" syntastic
- let g:syntastic_always_populate_loc_list=1
- let g:syntastic_error_symbol='✗'
- let g:syntastic_warning_symbol='⚠'
- let g:syntastic_style_error_symbol = '✗'
- let g:syntastic_style_warning_symbol = '⚠'
- let g:syntastic_auto_loc_list=1
- let g:syntastic_aggregate_errors = 1
- let g:syntastic_python_checkers=['python', 'pylint']
+" coc config
+source ~/.coc-mappings.vim
 
-" kite
-let g:kite_tab_complete=1
-set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
-set laststatus=2  " always display the status line<Paste>
+" function! CocExtensionStatus() abort
+"   return get(g:, 'coc_status', '')
+" endfunction
+" let g:airline_section_c = '%f%{CocExtensionStatus()}'
 
- " emmet
- "let g:user_emmet_leader_key='<C-Z>'
- "
+" neomake
+"Linting with neomake
+" call neomake#configure#automake('nw', 750)
+
+let g:neomake_sbt_maker = {
+      \ 'exe': 'sbt',
+      \ 'args': ['-Dsbt.log.noformat=true', 'compile'],
+      \ 'append_file': 0,
+      \ 'auto_enabled': 1,
+      \ 'output_stream': 'stdout',
+      \ 'errorformat':
+          \ '%E[%trror]\ %f:%l:\ %m,' .
+            \ '%-Z[error]\ %p^,' .
+            \ '%-C%.%#,' .
+            \ '%-G%.%#'
+     \ }
+let g:neomake_enabled_makers = ['sbt']
+let g:neomake_verbose=3
+" Neomake on text change
+"autocmd InsertLeave,TextChanged *.scala update | Neomake! sbt
+
+let g:neomake_serialize = 1
+let g:neomake_serialize_abort_on_error = 1
+let g:neomake_open_list = 2
+
+let g:neomake_warning_sign = {
+  \ 'text': 'W',
+  \ 'texthl': 'WarningMsg',
+  \ }
+let g:neomake_error_sign = {
+  \ 'text': 'E',
+  \ 'texthl': 'ErrorMsg',
+  \ }
