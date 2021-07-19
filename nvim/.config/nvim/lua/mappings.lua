@@ -22,10 +22,10 @@ vim.api.nvim_set_keymap("n", "<Leader>]", ":bnext<CR>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<Leader>[", ":bprev<CR>", {noremap = true})
 
 -- Window navigation
-vim.api.nvim_set_keymap("n", "<Leader>h", ":wincmd h<CR>", {noremap = true})
-vim.api.nvim_set_keymap("n", "<Leader>j", ":wincmd j<CR>", {noremap = true})
-vim.api.nvim_set_keymap("n", "<Leader>k", ":wincmd k<CR>", {noremap = true})
-vim.api.nvim_set_keymap("n", "<Leader>l", ":wincmd l<CR>", {noremap = true})
+vim.api.nvim_set_keymap("n", "<C-h>", ":wincmd h<CR>", {noremap = true})
+vim.api.nvim_set_keymap("n", "<C-j>", ":wincmd j<CR>", {noremap = true})
+vim.api.nvim_set_keymap("n", "<C-k>", ":wincmd k<CR>", {noremap = true})
+vim.api.nvim_set_keymap("n", "<C-l>", ":wincmd l<CR>", {noremap = true})
 
 -- Clear search result
 vim.api.nvim_set_keymap("n", "<C-n>", ":set hlsearch!<CR>", {noremap = true})

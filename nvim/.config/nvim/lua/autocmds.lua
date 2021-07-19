@@ -19,6 +19,7 @@ utils.define_augroups(
       {"BufWritePre", "*.py", ":Black"},
       {"BufWritePre", "*.dart", "execute ':DartFmt'"},
       {"BufWritePre", "*.lua", "call LuaFormat()"},
+      {"BufWritePre", "*.scala", "lua vim.lsp.buf.formatting()"},
       {
         "BufWritePost",
         "*.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*markdown,*.vue,*.yml,*.yaml,*.html",

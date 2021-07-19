@@ -21,6 +21,7 @@ require("formatter").setup(
       yaml = {prettierFmt},
       markdown = {prettierFmt},
       html = {prettierFmt},
+      scala = {prettierFmt},
       lua = {
         -- luafmt
         function()

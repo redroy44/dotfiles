@@ -2,6 +2,7 @@ local actions = require("telescope.actions")
 
 require("telescope").setup {
     defaults = {
+        file_ignore_patterns = { "target", "node_modules", "parser.c", "out" },
         file_sorter = require("telescope.sorters").get_fzy_sorter,
         selection_caret = "❯ ",
         entry_prefix = "  ",

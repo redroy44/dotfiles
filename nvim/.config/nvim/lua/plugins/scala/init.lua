@@ -26,7 +26,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 metals_config.capabilities = capabilities
 
-require("metals").initialize_or_attach(metals_config)
+-- require("metals").initialize_or_attach(metals_config)
 
 local cmd = vim.cmd
 -- LSP

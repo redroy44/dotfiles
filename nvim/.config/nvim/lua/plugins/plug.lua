@@ -70,6 +70,9 @@ return require("packer").startup(function(use)
     use {"prettier/vim-prettier", run = "yarn install"}
     use "psf/black"
 
+    -- Autosave
+    use "Pocco81/AutoSave.nvim"
+
     -- Utilies Plugins
     use {"tpope/vim-surround"}
     use "terrortylor/nvim-comment"

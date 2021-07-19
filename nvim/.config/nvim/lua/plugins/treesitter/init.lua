@@ -7,6 +7,11 @@ require("nvim-treesitter.configs").setup {
     enable = true, -- false will disable the whole extension
     disable = {"dart"}
   },
+  query_linter = {
+    enable = true,
+    use_virtual_text = true,
+    lint_events = { "BufWrite", "CursorHold" },
+  },
   indent = {enable = true},
   context_commentstring = {
     enable = true

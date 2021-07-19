@@ -8,7 +8,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
       prefix = ""
     },
     signs = true,
-    update_in_insert = false
+    update_in_insert = true
   }
 )
 
