@@ -10,7 +10,7 @@ require("plugins.lspcolors")
 -- Plugins
 require("plugins.autopairs")
 require("plugins.colorizer")
-require("plugins.compe")
+require("plugins.cmp")
 require("plugins.comment")
 require("plugins.scala")
 require("plugins.formatter")

@@ -34,6 +34,7 @@ require("telescope").setup {
 }
 
 require("telescope").load_extension("fzy_native")
+require('telescope').load_extension('dap')
 
 local M = {}
 
@@ -70,4 +71,16 @@ vim.api.nvim_set_keymap("n", "<Leader>pf",
                         [[<cmd>lua require('telescope.builtin').grep_string({search = vim.fn.input("Grep For > ")})<cr>]],
                         opts)
 
+vim.api.nvim_set_keymap("n", "<Leader>gr",
+                        [[<cmd>lua require('telescope.builtin').live_grep()<cr>]],
+                        opts)
+
+vim.api.nvim_set_keymap("n", "<Leader>wc",
+                        [[<cmd>lua require("telescope.builtin").lsp_document_symbols()<cr>]],
+                        opts)
+
+
+vim.api.nvim_set_keymap("n", "<Leader>wd",
+                        [[<cmd>lua require("telescope.builtin").lsp_dynamic_workspace_symbols()<cr>]],
+                        opts)
 return M

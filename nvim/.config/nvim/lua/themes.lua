@@ -1,11 +1,16 @@
+-- Onedark
+require("onedark").setup {
+	style = 'cool'
+}
+require('onedark').load()
 
 -- Lualine
 require("lualine").setup {
 	options = {
-	    theme = "onedark",
+	    theme = 'onedark',
 	    -- theme = "gruvbox-flat",
-	    section_separators = {'', ''},
-	    component_separators = {'', ''},
+	    section_separators = {left = '', right = ''},
+	    component_separators = {left = '', right = ''},
 	    icons_enabled = true
 	},
 	sections = {
@@ -27,10 +32,3 @@ require("lualine").setup {
 	tabline = {},
 	extensions = {}
     }
-    
-    -- Onedark
-    require("onedark").setup({
-	hideInactiveStatusline = true,
-	darkSidebar = false,
-	darkFloat = true
-    })

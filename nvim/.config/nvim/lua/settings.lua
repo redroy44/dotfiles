@@ -1,4 +1,5 @@
 -- vim.g.termguicolors = true -- set term gui colors most terminals support this
+vim.opt.termguicolors = true
 vim.g.t_Co = 256 -- Support 256 colors
 vim.g.syntax_on = true -- syntax highlighting
 
@@ -11,6 +12,7 @@ vim.o.conceallevel = 0 -- So that I can see `` in markdown files
 
 vim.g.autointend = true
 vim.g.smartintend = true
+vim.g.expandtab = true
 
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
@@ -44,3 +46,9 @@ vim.o.clipboard = "unnamedplus" -- Copy paste between vim and everything else
 
 vim.opt_global.completeopt = { "menu", "noinsert", "noselect" }
 vim.opt_global.shortmess:remove("F"):append("c")
+
+vim.cmd([[hi! link LspReferenceText CursorColumn]])
+vim.cmd([[hi! link LspReferenceRead CursorColumn]])
+vim.cmd([[hi! link LspReferenceWrite CursorColumn]])
+
+vim.cmd([[hi! link LspCodeLens CursorColumn]])

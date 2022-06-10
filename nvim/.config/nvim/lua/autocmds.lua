@@ -25,6 +25,9 @@ utils.define_augroups(
         "*.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*markdown,*.vue,*.yml,*.yaml,*.html",
         "FormatWrite"
       }
+    },
+    _codelens = {
+      {"ColorScheme", "*", "highlight link LspCodeLens Conceal"}
     }
   }
 )
