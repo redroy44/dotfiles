@@ -22,15 +22,23 @@
     # https://github.com/ryanoasis/nerd-fonts/blob/master/readme.md#patched-fonts
     lsd
     tree
+    ripgrep
+    silver-searcher
     # better du alternative
     # du-dust
-    # ripgrep
-    # graphviz
+    graphviz
     # git-crypt
 
     # httpstat
     # curlie
 
+    google-cloud-sdk
+    neovim
+    heroku
+    k9s
+    awscli
+    vault
+  
 
     # pkgsUnstable.youtube-dl
     # speedtest-cli
@@ -67,6 +75,7 @@
     # chromium
 
     # git
+    pre-commit
     # github cli
     # gitAndTools.gh
 

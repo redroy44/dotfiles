@@ -6,7 +6,7 @@
     # ./modules/fish.nix
     ./modules/common.nix
     # ./modules/git.nix
-    # ./modules/neovim.nix
+    # ./modules/neovim.nix # doesn't support lua config
   ];
 
   home.homeDirectory = "/Users/pbandurski";

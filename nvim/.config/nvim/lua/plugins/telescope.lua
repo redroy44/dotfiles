@@ -52,10 +52,6 @@ local project_files = function()
   end
 end
 
-local lsp_code_actions = function()
-  require('telescope.builtin').lsp_code_actions(require('telescope.themes').get_cursor())
-end
-
 local grep_string = function()
   require('telescope.builtin').grep_string({ search = vim.fn.input('Grep For > ') })
 end
@@ -73,7 +69,6 @@ map('n', '<space>vrc', function() nvim_dotfiles() end, opts)
 map('n', '<space>ktty', function() kitty_dotfiles() end, opts)
 map('n', '<C-p>', function() project_files() end, opts)
 
--- map('n', '<space>ca', function() lsp_code_actions() end, opts)
 map('n', '<space>pf', function() grep_string() end, opts)
 map('n', '<space>mt', function() metals() end, opts)
 
