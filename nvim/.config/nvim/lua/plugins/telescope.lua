@@ -73,7 +73,7 @@ map('n', '<space>vrc', function() nvim_dotfiles() end, opts)
 map('n', '<space>ktty', function() kitty_dotfiles() end, opts)
 map('n', '<C-p>', function() project_files() end, opts)
 
-map('n', '<space>ca', function() lsp_code_actions() end, opts)
+-- map('n', '<space>ca', function() lsp_code_actions() end, opts)
 map('n', '<space>pf', function() grep_string() end, opts)
 map('n', '<space>mt', function() metals() end, opts)
 
@@ -87,5 +87,7 @@ map('n', '<space>reg', function() return require('telescope.builtin').registers(
 map('n', '<space>gr', function() return require('telescope.builtin').live_grep() end, opts)
 map('n', '<space>wc', function() return require('telescope.builtin').lsp_document_symbols() end, opts)
 map('n', '<space>wd', function() return require('telescope.builtin').lsp_dynamic_workspace_symbols() end, opts)
+map('n', '<space><Tab>', function() return require('telescope.builtin').buffers() end, opts)
+
 
 -- stylua: ignore end

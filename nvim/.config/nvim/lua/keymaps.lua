@@ -24,15 +24,15 @@ map('v', '<A-k>', ":m '<-2<CR>gv=gv", opts)
 
 -- Buffer
 map('n', '<space><Esc>', ':bd<CR>', opts)
-map('n', '<C-l>', ':%bd!<CR>', opts)
+-- map('n', '<C-l>', ':%bd!<CR>', opts)
 map('n', '<space>]', ':bnext<CR>', opts)
 map('n', '<space>[', ':bprev<CR>', opts)
 
 -- Window navigation
-map('n', '<space>h', ':wincmd h<CR>', opts)
-map('n', '<space>j', ':wincmd j<CR>', opts)
-map('n', '<space>k', ':wincmd k<CR>', opts)
-map('n', '<space>l', ':wincmd l<CR>', opts)
+map('n', '<C-h>', ':wincmd h<CR>', opts)
+map('n', '<C-j>', ':wincmd j<CR>', opts)
+map('n', '<C-k>', ':wincmd k<CR>', opts)
+map('n', '<C-l>', ':wincmd l<CR>', opts)
 
 -- Clear search result
 map('n', '<C-n>', ':set hlsearch!<CR>', opts)

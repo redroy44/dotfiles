@@ -1,8 +1,7 @@
 -- Leader key
 vim.g.mapleader = ' '
 
--- Statusline
--- require('options.statusline')
+-- vim.opt_global.shortmess:remove("F"):append("c")
 
 -- Block cursor always
 vim.opt.guicursor = 'i:block'

@@ -81,7 +81,7 @@ local plugins = function(use)
       require('plugins.treesitter')
     end,
   })
-  use({ 'nvim-treesitter/playground' })
+  -- use({ 'nvim-treesitter/playground' })
   use({ 'windwp/nvim-ts-autotag' })
   use({
     'lewis6991/spellsitter.nvim',
@@ -208,12 +208,12 @@ local plugins = function(use)
   })
   use({ 'tpope/vim-surround' })
   use({ 'lilydjwg/colorizer' })
-  use({
-    'Pocco81/AutoSave.nvim',
-    config = function()
-      require('plugins.autosave')
-    end,
-  })
+  -- use({
+  --   'Pocco81/AutoSave.nvim',
+  --   config = function()
+  --     require('plugins.autosave')
+  --   end,
+  -- })
   use({
     'terrortylor/nvim-comment',
     config = function()

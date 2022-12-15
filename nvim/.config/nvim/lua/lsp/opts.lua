@@ -36,16 +36,19 @@ local opts = {
     buf_set_keymap('n', '<space>e', "<cmd>lua vim.diagnostic.show_line_diagnostics({float={border='rounded'}})<CR>", opts)
     buf_set_keymap('n', '[d', "<cmd>lua vim.diagnostic.goto_prev({float={border='rounded'}})<CR>", opts)
     buf_set_keymap('n', ']d', "<cmd>lua vim.diagnostic.goto_next({float={border='rounded'}})<CR>", opts)
-    buf_set_keymap('n', '<space>q', function() vim.diagnostic.set_loclist() end, opts)
+    buf_set_keymap('n', '<space>q', function() vim.diagnostic.setloclist() end, opts)
     buf_set_keymap('n', '<space>ff', function() vim.lsp.buf.format() end, opts)
     buf_set_keymap('n', '<space>cl', function() vim.lsp.codelens.run() end, opts)
+    buf_set_keymap('n', '<space>ca', function() vim.lsp.buf.code_action() end, opts)
+    buf_set_keymap('n', '<space>e', function() vim.diagnostic.setqflist() end, opts)
+
     -- stylua: ignore end
 
     vim.cmd('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
 
-    print('LSP Attached.')
+    -- print('LSP Attached.')
   end,
-  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+  capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
 }
 
 return opts
