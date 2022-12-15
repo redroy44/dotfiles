@@ -4,14 +4,14 @@
   # https://github.com/nix-community/nix-direnv#via-home-manager
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-  programs.zsh.enable = true;
+  # programs.zsh.enable = true;
 
   home.packages = with pkgs; [
     gnupg
     tmux
     wget
     bat
-    # bottom
+    htop
     fzf
     # rename
     neofetch # fancy system + hardware info
