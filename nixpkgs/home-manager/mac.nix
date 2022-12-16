@@ -3,9 +3,10 @@
 {
   imports = [
     ./modules/home-manager.nix
-    # ./modules/fish.nix
+    ./modules/zsh.nix
     ./modules/common.nix
     ./modules/git.nix
+    ./modules/starship.nix
     # ./modules/neovim.nix # doesn't support lua config
   ];
 
@@ -13,6 +14,8 @@
   home.username = "pbandurski";
 
   home.stateVersion = "22.11";
+
+  fonts.fontconfig.enable = true;
 
   # programs.fish.interactiveShellInit = ''
   #   set -x SSH_AUTH_SOCK "$HOME/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh";
