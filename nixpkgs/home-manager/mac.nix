@@ -5,7 +5,7 @@
     ./modules/home-manager.nix
     # ./modules/fish.nix
     ./modules/common.nix
-    # ./modules/git.nix
+    ./modules/git.nix
     # ./modules/neovim.nix # doesn't support lua config
   ];
 
