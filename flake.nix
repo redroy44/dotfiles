@@ -46,11 +46,11 @@
       };
 
       darwinConfigurations = {
-        # nix build .#darwinConfigurations.mbp2021.system
+        # nix build .#darwinConfigurations.MacBook-Pro-Piotr.system
         # ./result/sw/bin/darwin-rebuild switch --flake .
-        scalac-mbp = darwin.lib.darwinSystem {
+        MacBook-Pro-Piotr = darwin.lib.darwinSystem {
           system = "x86_64-darwin";
-          modules = [ ./nixpkgs/darwin/scalac-mbp/configuration.nix ];
+          modules = [ ./nixpkgs/darwin/MacBook-Pro-Piotr/configuration.nix ];
           inputs = { inherit darwin nixpkgs; };
         };
       };

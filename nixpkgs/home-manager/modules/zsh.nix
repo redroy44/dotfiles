@@ -11,12 +11,13 @@
     ]);
 
     initExtra = (builtins.concatStringsSep "\n" [
-     "#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!"
-     "export SDKMAN_DIR=\"/Users/pbandurski/.sdkman\""
-     "[[ -s \"/Users/pbandurski/.sdkman/bin/sdkman-init.sh\" ]] && source \"/Users/pbandurski/.sdkman/bin/sdkman-init.sh\""
      "eval \"$(starship init zsh)\""
     ]);
     
+    # initExtraBeforeCompInit = (builtins.concatStringsSep "\n" [
+    #  "fpath=(~/.zsh/completion $fpath)"
+    # ]);
+
     oh-my-zsh = {
       enable = true;
       theme = "lambda";

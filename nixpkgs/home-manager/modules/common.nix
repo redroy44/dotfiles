@@ -11,6 +11,7 @@
     wget
     bat
     htop
+    bottom
     fzf
     neofetch # fancy system + hardware info
     lsd
@@ -23,7 +24,9 @@
     neovim
     heroku
     k9s
+    kubectl
     awscli
+    terraform
     vault
     jq
     pre-commit
@@ -32,6 +35,9 @@
     fira-code-symbols
     jetbrains-mono
     nerdfonts
+
+    # Scala
+    coursier
 
   ] ++ lib.optionals stdenv.isDarwin [
     coreutils # provides `dd` with --status=progress
