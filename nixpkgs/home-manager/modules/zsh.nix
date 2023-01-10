@@ -6,13 +6,16 @@
     enableCompletion = true;
     enableSyntaxHighlighting = true;
 
-    initExtraFirst = (builtins.concatStringsSep "\n" [
-      "export KUBECONFIG=\"$HOME/.kube/config\""
+    envExtra = (builtins.concatStringsSep "\n" [
+      "KUBECONFIG=\"$HOME/.kube/config\""
+      "PATH=\"/usr/local/bin:$PATH\""
     ]);
 
+    # interactiveShellInit
     initExtra = (builtins.concatStringsSep "\n" [
      "eval \"$(starship init zsh)\""
     ]);
+
     
     # initExtraBeforeCompInit = (builtins.concatStringsSep "\n" [
     #  "fpath=(~/.zsh/completion $fpath)"

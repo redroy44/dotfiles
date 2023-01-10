@@ -9,7 +9,7 @@
 
     # Currently disabled `nix.settings.auto-optimise-store` as it seems to fail with remote builders
     # TODO renable when fixed https://github.com/NixOS/nix/issues/7273
-    settings.auto-optimise-store = false;
+    # settings.auto-optimise-store = false;
 
     extraOptions = ''
       # needed for nix-direnv
@@ -48,10 +48,6 @@ homebrew = {
       "homebrew/cask-drivers"
     ];
 
-    # brews = [
-    #   "platformio"
-    # ];
-
     casks = [
 
       # Dev
@@ -66,10 +62,22 @@ homebrew = {
 
       "postico"
       "visual-studio-code"
+      "intellij-idea-ce"
+      "slack"
+      "brave-browser"
+      "notion"
+
 
       # Media
       "spotify"
     ];
+
+    masApps {
+      "NordVPN: VPN Fast & Secure" = 905953485;
+      "Bitwarden" = 1352778147;
+      "EasyRes" = 688211836;
+      "Spark – Email App by Readdle" = 1176895641;
+    };
   };
 
 }
