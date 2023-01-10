@@ -2,6 +2,13 @@
 {
   nixpkgs.config.allowUnfree = true;
 
+  programs.zsh.enable = true;
+
+  users.users.pbandurski = {
+    name = "pbandurski";
+    home = "/Users/pbandurski";
+  };
+
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
   nix = {

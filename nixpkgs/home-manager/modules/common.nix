@@ -37,7 +37,7 @@
     nerdfonts
 
     # Scala
-    bloop
+    # bloop not on aarch64-darwin
     coursier
 
   ] ++ lib.optionals stdenv.isDarwin [

@@ -10,8 +10,8 @@
     # ./modules/neovim.nix # doesn't support lua config
   ];
 
-  home.homeDirectory = "/Users/pbandurski";
-  home.username = "pbandurski";
+  # home.homeDirectory = "/Users/pbandurski";
+  # home.username = "pbandurski";
 
   home.stateVersion = "22.11";
 

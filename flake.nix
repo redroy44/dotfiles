@@ -69,7 +69,9 @@
           home-manager.darwinModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.pbandurski = import ./nixpkgs/home-manager/mac.nix;
+            home-manager.users.pbandurski = { 
+              imports = [ ./nixpkgs/home-manager/mac.nix ]; 
+            };
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
