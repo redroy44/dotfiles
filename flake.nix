@@ -65,7 +65,15 @@
         };
         macbook-pro-14 = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
-          modules = [ ./nixpkgs/darwin/macbook-pro-14/configuration.nix ];
+          modules = [ ./nixpkgs/darwin/macbook-pro-14/configuration.nix 
+          home-manager.darwinModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.pbandurski = import ./nixpkgs/home-manager/mac.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass
+            # arguments to home.nix
+          }];
           inputs = { inherit darwin nixpkgs; };
         };
       };
