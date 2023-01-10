@@ -69,8 +69,6 @@ homebrew = {
       "homebrew/cask"
     ];
 
-    brews = [ "mas" ];
-
     casks = [
 
       # Dev
@@ -93,12 +91,12 @@ homebrew = {
       "spotify"
     ];
 
-    # masApps = {
-    #   "NordVPN: VPN Fast & Secure" = 905953485;
-    #   "Bitwarden" = 1352778147;
-    #   "EasyRes" = 688211836;
-    #   "Spark – Email App by Readdle" = 1176895641;
-    # };
+    masApps = {
+      "NordVPN" = 905953485;
+      "Bitwarden" = 1352778147;
+      "EasyRes" = 688211836;
+      "Spark" = 1176895641;
+    };
   };
 
 }
