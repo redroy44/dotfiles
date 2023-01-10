@@ -43,10 +43,10 @@ homebrew = {
     enable = true;
     onActivation.cleanup = "uninstall";
 
-    taps = [
-      "homebrew/cask"
-      "homebrew/cask-drivers"
-    ];
+    # taps = [
+    #   "homebrew/cask"
+    #   "homebrew/cask-drivers"
+    # ];
 
     casks = [
 
