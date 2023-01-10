@@ -3,7 +3,7 @@
   programs.git = {
     enable = true;
     userName = "Piotr Bandurski";
-    userEmail = "piotr.bandurski@scalac.io";
+    userEmail = "redroy44@gmail.com";
 
     delta = {
       enable = true;
@@ -16,6 +16,18 @@
     signing = {
       key = "07A01229AAA846E1";
     };
+
+    ignores = [
+      "**/.metals/"
+      "**/project/metals.sbt"
+      "**/.idea/"
+      "**/.vscode/settings.json"
+      "**/.bloop/"
+      "**/.bsp/"
+      "**/.scala-build/"
+      "**/.direnv/"
+      "**/.DS_Store"
+    ];
 
     extraConfig = {
       pull.rebase = true;
