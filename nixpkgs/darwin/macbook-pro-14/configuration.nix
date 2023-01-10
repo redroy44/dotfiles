@@ -41,12 +41,24 @@
 
 homebrew = {
     enable = true;
-    onActivation.cleanup = "uninstall";
+    onActivation = {
+      upgrade = true;
+      autoUpdate = true;
+      cleanup = "zap";
+    };
 
-    # taps = [
-    #   "homebrew/cask"
-    #   "homebrew/cask-drivers"
-    # ];
+    global = {
+      autoUpdate = true;
+      brewfile = true;
+      lockfiles = true;
+    };
+
+    taps = [
+      "homebrew/core"
+      "homebrew/cask"
+    ];
+
+    brews = [ "mas" ];
 
     casks = [
 
