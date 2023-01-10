@@ -33,11 +33,21 @@
     {
 
       homeConfigurations = {
-        scalac-mbp = inputs.home-manager.lib.homeManagerConfiguration {
+        MacBook-Pro-Piotr = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = inputs.nixpkgs.legacyPackages.x86_64-darwin;
           modules = [ ./nixpkgs/home-manager/mac.nix ];
           # extraModules = [ ./nixpkgs/home-manager/mac.nix ];
           extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.x86_64-darwin; };
+          # system = "x86_64-darwin";
+          # configuration = { };
+          # homeDirectory = "/home/schickling";
+          # username = "schickling";
+        };
+        macbook-pro-14 = inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
+          modules = [ ./nixpkgs/home-manager/mac.nix ];
+          # extraModules = [ ./nixpkgs/home-manager/mac.nix ];
+          extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; };
           # system = "aarch64-darwin";
           # configuration = { };
           # homeDirectory = "/home/schickling";
@@ -51,6 +61,11 @@
         MacBook-Pro-Piotr = darwin.lib.darwinSystem {
           system = "x86_64-darwin";
           modules = [ ./nixpkgs/darwin/MacBook-Pro-Piotr/configuration.nix ];
+          inputs = { inherit darwin nixpkgs; };
+        };
+        macbook-pro-14 = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [ ./nixpkgs/darwin/macbook-pro-14/configuration.nix ];
           inputs = { inherit darwin nixpkgs; };
         };
       };
