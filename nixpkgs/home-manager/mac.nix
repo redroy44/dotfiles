@@ -7,6 +7,7 @@
     ./modules/common.nix
     ./modules/git.nix
     ./modules/starship.nix
+    ./modules/kitty.nix
     # ./modules/neovim.nix # doesn't support lua config
   ];
 

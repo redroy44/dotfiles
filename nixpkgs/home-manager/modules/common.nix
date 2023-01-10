@@ -20,7 +20,6 @@
     silver-searcher
     graphviz
     iterm2
-    kitty
 
     google-cloud-sdk
     neovim

@@ -12,9 +12,9 @@
     ]);
 
     # interactiveShellInit
-    initExtra = (builtins.concatStringsSep "\n" [
-     "eval \"$(starship init zsh)\""
-    ]);
+    #initExtra = (builtins.concatStringsSep "\n" [
+    # "eval \"$(starship init zsh)\""
+    #]);
 
     
     # initExtraBeforeCompInit = (builtins.concatStringsSep "\n" [
@@ -25,6 +25,7 @@
       enable = true;
       theme = "lambda";
       plugins = [
+        "ssh-agent"
         "git"
         "sbt"
         "python"
