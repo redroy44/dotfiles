@@ -71,27 +71,25 @@ homebrew = {
 
       # Dev
       "docker"
-      "kitty"
-      # "iterm2"
-      # "postman"
-      # "rectangle"
+      "postman"
+      "rectangle"
       # "osxfuse"
       # "avibrazil-rdm"
 
 
-      # "postico"
-      # "visual-studio-code"
-      # "intellij-idea-ce"
-      # "slack"
+      "postico"
+      "visual-studio-code"
+      "intellij-idea-ce"
+      "slack"
       "brave-browser"
-      # "notion"
+      "notion"
 
 
       # Media
       "spotify"
     ];
 
-    # masApps {
+    # masApps = {
     #   "NordVPN: VPN Fast & Secure" = 905953485;
     #   "Bitwarden" = 1352778147;
     #   "EasyRes" = 688211836;
