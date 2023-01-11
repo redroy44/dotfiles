@@ -64,6 +64,7 @@
             home-manager.users.pbandurski = { 
               imports = [ ./nixpkgs/home-manager/mac.nix ]; 
             };
+            home-manager.extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; };
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix

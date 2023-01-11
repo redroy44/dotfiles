@@ -41,6 +41,11 @@
     # Scala
     jdk17
     coursier
+    ammonite
+    sbt
+    scala
+    scalafmt
+    scala-cli
 
   ] ++ lib.optionals stdenv.isDarwin [
     coreutils # provides `dd` with --status=progress
