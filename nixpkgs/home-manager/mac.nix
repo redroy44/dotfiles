@@ -15,4 +15,7 @@
 
   fonts.fontconfig.enable = true;
 
+  home.username = "pbandurski";
+  home.homeDirectory = "/Users/pbandurski";
+
 }

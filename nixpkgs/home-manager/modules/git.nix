@@ -27,6 +27,8 @@
       "**/.scala-build/"
       "**/.direnv/"
       "**/.DS_Store"
+      ".direnv"
+      ".envrc"
     ];
 
     extraConfig = {

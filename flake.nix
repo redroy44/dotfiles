@@ -38,20 +38,12 @@
           modules = [ ./nixpkgs/home-manager/mac.nix ];
           # extraModules = [ ./nixpkgs/home-manager/mac.nix ];
           extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.x86_64-darwin; };
-          # system = "x86_64-darwin";
-          # configuration = { };
-          # homeDirectory = "/home/schickling";
-          # username = "schickling";
         };
         macbook-pro-14 = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
           modules = [ ./nixpkgs/home-manager/mac.nix ];
           # extraModules = [ ./nixpkgs/home-manager/mac.nix ];
           extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; };
-          # system = "aarch64-darwin";
-          # configuration = { };
-          # homeDirectory = "/home/schickling";
-          # username = "schickling";
         };
       };
 
