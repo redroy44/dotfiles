@@ -5,6 +5,13 @@
     userName = "Piotr Bandurski";
     userEmail = "redroy44@gmail.com";
 
+    includes = [
+      { 
+        path = "~/code/.gitconfig";
+        condition = "gitdir:~/code/";
+      }
+    ];
+
     delta = {
       enable = true;
       options = {
