@@ -10,7 +10,7 @@
     dock = {
       orientation = "left";
       tilesize = 48;
-      autohide = false;
+      autohide = true;
       mru-spaces = false;  
       minimize-to-application = true;
       show-recents = false;

@@ -85,6 +85,7 @@ homebrew = {
       "slack"
       "brave-browser"
       "notion"
+      "itsycal"
 
 
       # Media
