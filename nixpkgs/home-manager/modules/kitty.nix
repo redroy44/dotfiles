@@ -10,15 +10,19 @@
     };
 
     settings = {
-      kitty_mod = "ctrl";
+      kitty_mod = "ctrl+shift";
 
       enabled_layouts = "splits:split_axis=horizontal";
 
       shell_integration = "enabled";
       confirm_os_window_close = 0;
 
+      sync_to_monitor = "yes";
+
       macos_quit_when_last_window_closed = "no";
       macos_show_window_title_in = "window";
+
+      tab_bar_style = "powerline";
     };
 
     keybindings = {
@@ -32,24 +36,24 @@
       "kitty_mod+a>backspace" = "change_font_size all 0";
 
       # Tabs (like browser)
-      "kitty_mod+a>n" = "next_tab";
-      "kitty_mod+a>p" = "previous_tab";
-      "kitty_mod+a>c" = "new_tab";
+      "ctrl+a>n" = "next_tab";
+      "ctrl+a>p" = "previous_tab";
+      "ctrl+a>c" = "new_tab";
       # "kitty_mod+x" = "close_tab";
 
       # splits
-      "kitty_mod+a>|" = "launch --location=vsplit --cwd=current";
-      "kitty_mod+a>-" = "launch --location=hsplit --cwd=current";
-      "kitty_mod+a>x" = "close_window";
+      "ctrl+a>\\" = "launch --location=vsplit --cwd=current";
+      "ctrl+a>-" = "launch --location=hsplit --cwd=current";
+      "ctrl+a>x" = "close_window";
 
       # resize
       # "ctrl+shift+r" = "start_resizing_window";
 
       # # navigation
-      "ctrl+left" = "neighboring_window left";
-      "ctrl+down" = "neighboring_window down";
-      "ctrl+up" = "neighboring_window up";
-      "ctrl+right" = "neighboring_window right";
+      "ctrl+a>left" = "neighboring_window left";
+      "ctrl+a>down" = "neighboring_window down";
+      "ctrl+a>up" = "neighboring_window up";
+      "ctrl+a>right" = "neighboring_window right";
     };
   };
 }
