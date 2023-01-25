@@ -47,6 +47,11 @@
     scalafmt
     scala-cli
 
+    python3
+    nodejs
+    nodePackages.npm
+
+
   ] ++ lib.optionals stdenv.isDarwin [
     coreutils # provides `dd` with --status=progress
     # wifi-password

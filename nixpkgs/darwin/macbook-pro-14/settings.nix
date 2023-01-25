@@ -5,12 +5,13 @@
       AppleInterfaceStyle = "Dark";
       AppleShowAllExtensions = true;
       "com.apple.keyboard.fnState" = true;
+      AppleFontSmoothing = 0;
     };
 
     dock = {
       orientation = "left";
       tilesize = 48;
-      autohide = true;
+      autohide = false;
       mru-spaces = false;  
       minimize-to-application = true;
       show-recents = false;
