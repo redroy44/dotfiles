@@ -7,10 +7,16 @@
   nixpkgs.config.allowUnfree = true;
 
   programs.zsh.enable = true;
+  programs.zsh.enableCompletion = false;
 
   users.users.pbandurski = {
     name = "pbandurski";
     home = "/Users/pbandurski";
+  };
+
+  users.users.zp = {
+    name = "zp";
+    home = "/Users/zp";
   };
 
   # Auto upgrade nix package and the daemon service.
@@ -61,7 +67,7 @@ homebrew = {
     global = {
       autoUpdate = true;
       brewfile = true;
-      lockfiles = true;
+      # lockfiles = true;
     };
 
     taps = [
@@ -72,12 +78,10 @@ homebrew = {
     casks = [
 
       # Dev
-      "docker"
+      # "docker"
+      "iterm2"
       "postman"
       "rectangle"
-      # "osxfuse"
-      # "avibrazil-rdm"
-
 
       "postico"
       "visual-studio-code"
@@ -86,7 +90,7 @@ homebrew = {
       "brave-browser"
       "notion"
       "itsycal"
-
+      "zoom"
 
       # Media
       "spotify"

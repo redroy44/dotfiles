@@ -1,5 +1,21 @@
-{ config, pkgs, pkgsUnstable, libs, ... }:
+{ config, lib, pkgs, ... }:
+
 {
+  imports = [
+    # ./modules/home-manager.nix
+    ./modules/zsh.nix
+    ./modules/git.nix
+    ./modules/starship.nix
+    ./modules/kitty.nix
+    # ./modules/neovim.nix # doesn't support lua config
+  ];
+
+  home.stateVersion = "22.11";
+
+  fonts.fontconfig.enable = true;
+
+  home.username = "pbandurski";
+  home.homeDirectory = "/Users/pbandurski";
 
   # https://github.com/nix-community/nix-direnv#via-home-manager
   programs.direnv.enable = true;
@@ -64,6 +80,5 @@
 
     # libuuid # `uuidgen` (already pre-installed on mac)
   ];
-
 
 }

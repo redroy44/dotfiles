@@ -1,5 +1,21 @@
-{ config, pkgs, pkgsUnstable, libs, ... }:
+{ config, lib, pkgs, ... }:
+
 {
+  imports = [
+    # ./modules/home-manager.nix
+    ./modules/zsh.nix
+    # ./modules/git.nix
+    ./modules/starship.nix
+    # ./modules/kitty.nix
+    # ./modules/neovim.nix # doesn't support lua config
+  ];
+
+  home.stateVersion = "22.11";
+
+  fonts.fontconfig.enable = true;
+
+  home.username = "zp";
+  home.homeDirectory = "/Users/zp";
 
   # https://github.com/nix-community/nix-direnv#via-home-manager
   programs.direnv.enable = true;
@@ -20,41 +36,19 @@
     ripgrep
     silver-searcher
     graphviz
-    iterm2
 
-    google-cloud-sdk
-    neovim
-    heroku
-    k9s
-    kubectl
-    awscli
-    terraform
-    terraform-ls
-    vault
-    jq
-    pre-commit
+    # Ruby
+    ruby
+    rubocop
+    rbenv
+
+    nodejs
+    nodePackages.npm
 
     fira-code
     fira-code-symbols
     jetbrains-mono
     nerdfonts
-
-    # Scala
-    jdk17
-    coursier
-    ammonite
-    sbt
-    scala
-    scalafmt
-    scala-cli
-
-    python3
-    nodejs
-    nodePackages.npm
-
-    colima
-    docker-client
-    docker-compose
     
   ] ++ lib.optionals stdenv.isDarwin [
     coreutils # provides `dd` with --status=progress
@@ -64,6 +58,5 @@
 
     # libuuid # `uuidgen` (already pre-installed on mac)
   ];
-
 
 }

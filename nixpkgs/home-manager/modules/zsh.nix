@@ -5,21 +5,19 @@
     enableAutosuggestions = true;
     enableCompletion = true;
     enableSyntaxHighlighting = true;
+    # completionInit = "autoload -U compinit && compinit -u";
 
     envExtra = (builtins.concatStringsSep "\n" [
       "KUBECONFIG=\"$HOME/.kube/config\""
       "PATH=\"/usr/local/bin:$PATH\""
+      "ZSH_DISABLE_COMPFIX=\"true\""
     ]);
-
-    # initExtraBeforeCompInit = (builtins.concatStringsSep "\n" [
-    #  "fpath=(~/.zsh/completion $fpath)"
-    # ]);
 
     oh-my-zsh = {
       enable = true;
       theme = "lambda";
       plugins = [
-        "ssh-agent"
+        # "ssh-agent"
         "git"
         "sbt"
         "python"

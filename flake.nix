@@ -35,13 +35,13 @@
       homeConfigurations = {
         MacBook-Pro-Piotr = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = inputs.nixpkgs.legacyPackages.x86_64-darwin;
-          modules = [ ./nixpkgs/home-manager/mac.nix ];
+          modules = [ ./nixpkgs/home-manager/pb.nix ];
           # extraModules = [ ./nixpkgs/home-manager/mac.nix ];
           extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.x86_64-darwin; };
         };
         macbook-pro-14 = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
-          modules = [ ./nixpkgs/home-manager/mac.nix ];
+          modules = [ ./nixpkgs/home-manager/pb.nix ];
           # extraModules = [ ./nixpkgs/home-manager/mac.nix ];
           extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; };
         };
@@ -62,7 +62,10 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.pbandurski = { 
-              imports = [ ./nixpkgs/home-manager/mac.nix ]; 
+              imports = [ ./nixpkgs/home-manager/pb.nix ]; 
+            };
+            home-manager.users.zp = { 
+              imports = [ ./nixpkgs/home-manager/zp.nix ]; 
             };
             home-manager.extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; };
 

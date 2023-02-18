@@ -56,8 +56,6 @@ homebrew = {
       "iterm2"
       "postman"
       "rectangle"
-      # "osxfuse"
-      # "avibrazil-rdm"
 
 
       "postico"
