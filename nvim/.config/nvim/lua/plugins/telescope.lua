@@ -73,7 +73,7 @@ map('n', '<space>pf', function() grep_string() end, opts)
 map('n', '<space>mt', function() metals() end, opts)
 
 -- Builtin key-binding
-map('n', '<space>help', function() return require('telescope.builtin').help_tags() end, opts)
+map('n', '<space>j', function() return require('telescope.builtin').jumplist() end, opts)
 map('n', '<space>man', function() return require('telescope.builtin').man_pages() end, opts)
 map('n', '<space>=', function() return require('telescope.builtin').spell_suggest() end, opts)
 map('n', '<space>hi', function() return require('telescope.builtin').highlights() end, opts)

@@ -12,6 +12,11 @@ M.setup = function()
     }
   }
 
+  -- Mappings
+vim.keymap.set('n', '<space>t', function()
+  require("dap").repl.toggle()
+end, { noremap = true, silent = true })
+
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
 

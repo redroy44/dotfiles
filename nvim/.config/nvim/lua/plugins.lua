@@ -221,6 +221,11 @@ local plugins = function(use)
     end,
   })
 
+  -- https://github.com/sudormrfbin/cheatsheet.nvim
+  -- https://github.com/akinsho/bufferline.nvim
+  -- https://github.com/folke/which-key.nvim
+
+
 
 end
 

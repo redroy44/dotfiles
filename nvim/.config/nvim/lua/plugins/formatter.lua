@@ -64,6 +64,8 @@ local files = {
   '*.xml',
   '*.yaml',
   '*.yml',
+  "*.tf",
+  "*.tfvars"
 }
 
 local pattern = table.concat(files, ',')

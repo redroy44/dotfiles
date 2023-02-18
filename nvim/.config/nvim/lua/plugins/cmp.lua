@@ -42,6 +42,20 @@ cmp.setup({
         feedkey('<Plug>(vsnip-jump-prev)', '')
       end
     end, { 'i', 's' }),
+    ["<Down>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, {"i","s","c",}),
+    ["<Up>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, {"i","s","c",}),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
   },

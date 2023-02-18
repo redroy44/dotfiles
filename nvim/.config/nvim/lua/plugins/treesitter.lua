@@ -28,7 +28,9 @@ require('nvim-treesitter.configs').setup({
     'html',
     'css',
     'scala',
-    'java'
+    'java',
+    'terraform',
+    'nix'
   },
   autotag = { enable = true },
   indent = { enable = true },
