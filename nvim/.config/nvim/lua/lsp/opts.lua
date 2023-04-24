@@ -4,7 +4,7 @@ local opts = {
   on_attach = function(_, bufnr)
     require('lsp.func')
 
-    signature_setup = {
+    local signature_setup = {
       floating_window = true,
       hint_enable = false
     }

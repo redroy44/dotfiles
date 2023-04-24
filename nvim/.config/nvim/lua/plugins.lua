@@ -84,7 +84,8 @@ local plugins = function(use)
       require('plugins.treesitter')
     end,
   })
-  -- use({ 'nvim-treesitter/playground' })
+  use({ 'nvim-treesitter/nvim-treesitter-context' })
+  use({ 'nvim-treesitter/playground' })
   use({ 'windwp/nvim-ts-autotag' })
   use({
     'lewis6991/spellsitter.nvim',
@@ -206,6 +207,26 @@ local plugins = function(use)
   })
   use "mfussenegger/nvim-dap"
 
+  use({
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "stevanmilic/neotest-scala",
+      "antoinemadec/FixCursorHold.nvim"
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-scala")({
+            runner = "sbt",
+            framework = "scalatest",
+          }),
+        }
+      })
+    end
+  })
+
   --
   -- Misc
   --
@@ -236,9 +257,6 @@ local plugins = function(use)
   -- https://github.com/sudormrfbin/cheatsheet.nvim
   -- https://github.com/akinsho/bufferline.nvim
   -- https://github.com/folke/which-key.nvim
-
-
-
 end
 
 require('packer').startup({
@@ -250,7 +268,8 @@ require('packer').startup({
         return require('packer.util').float({ border = 'rounded' })
       end,
       prompt_border = 'rounded',
-      keybindings = { -- Keybindings for the display window
+      keybindings = {
+        -- Keybindings for the display window
         quit = 'q',
         toggle_info = '<cr>',
         diff = '=',

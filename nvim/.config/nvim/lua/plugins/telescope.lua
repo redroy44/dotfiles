@@ -2,7 +2,7 @@ local actions = require('telescope.actions')
 
 require('telescope').setup({
   defaults = {
-    file_ignore_patterns = { "node_modules/", "out/", "__pycache__/" },
+    file_ignore_patterns = { "node_modules/", "__pycache__/" },
     file_sorter = require("telescope.sorters").get_fzy_sorter,
     selection_caret = '❯ ',
     entry_prefix = '  ',
