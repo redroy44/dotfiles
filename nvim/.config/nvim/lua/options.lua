@@ -4,7 +4,10 @@ vim.g.mapleader = ' '
 -- vim.opt_global.shortmess:remove("F"):append("c")
 
 -- Block cursor always
-vim.opt.guicursor = 'i:block'
+-- vim.opt.guicursor = 'i:block'
+
+-- colorscheme
+vim.cmd("colorscheme kanagawa")
 
 -- Spell Checker
 vim.opt.spell = true
@@ -56,7 +59,7 @@ vim.opt.wrapscan = true
 
 -- line default relative number
 vim.opt.number = true
-vim.opt.relativenumber = true
+-- vim.opt.relativenumber = true
 
 vim.wo.cursorline = true -- Enable highlighting of the current line
 vim.wo.signcolumn = 'yes' -- Always show the signcolumn, otherwise it would shift the text each time

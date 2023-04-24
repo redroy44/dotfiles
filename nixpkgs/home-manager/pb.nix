@@ -37,6 +37,7 @@
     silver-searcher
     graphviz
     iterm2
+    httpie
 
     google-cloud-sdk
     neovim
@@ -65,6 +66,7 @@
     scala-cli
 
     python3
+    poetry
     nodejs
     nodePackages.npm
 

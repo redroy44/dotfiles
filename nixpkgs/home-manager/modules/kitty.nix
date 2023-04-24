@@ -2,7 +2,7 @@
 {
   programs.kitty = {
     enable = true;
-    theme = "One Dark";
+    theme = "kanagawabones";
 
     font = {
       name = "FiraCode Nerd Font Mono";

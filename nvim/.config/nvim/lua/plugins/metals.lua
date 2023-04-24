@@ -6,6 +6,7 @@ M.setup = function()
   metals_config.settings = {
     showImplicitArguments = true,
     showInferredType = true,
+    testUserInterface = "Test Explorer",
     excludedPackages = {
       'akka.actor.typed.javadsl',
       'com.github.swagger.akka.javadsl'
@@ -34,18 +35,9 @@ end, { noremap = true, silent = true })
     {
       type = "scala",
       request = "launch",
-      name = "Run",
+      name = "Run or Test Target",
       metals = {
-        runType = "run",
-        -- args = { "firstArg", "secondArg", "thirdArg" },
-      },
-    },
-    {
-      type = "scala",
-      request = "launch",
-      name = "Test File",
-      metals = {
-        runType = "testFile",
+        runType = "runOrTestFile",
       },
     },
     {
@@ -57,8 +49,6 @@ end, { noremap = true, silent = true })
       },
     },
   }
-
-
 
   local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
   vim.api.nvim_create_autocmd("FileType", {

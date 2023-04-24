@@ -4,6 +4,13 @@ local opts = {
   on_attach = function(_, bufnr)
     require('lsp.func')
 
+    signature_setup = {
+      floating_window = true,
+      hint_enable = true
+    }
+
+    require "lsp_signature".on_attach(signature_setup, bufnr)
+
     local function buf_set_keymap(mode, l, r, opts)
       opts = opts or {}
       opts.buffer = bufnr

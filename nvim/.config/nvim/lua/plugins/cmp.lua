@@ -12,8 +12,8 @@ end
 cmp.setup({
   completion = { autocomplete = false, completeopt = 'menu,menuone,noinsert' },
   window = {
-    -- completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
+    completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
   },
   snippet = {
     expand = function(args)
@@ -76,10 +76,11 @@ cmp.setup({
     end,
   },
   sources = {
+    { name = 'nvim_lua' },
     { name = 'cmp_git' },
     { name = 'nvim_lsp', priority = 10 },
-    { name = 'nvim_lua' },
     { name = 'vsnip' },
+    { name = 'treesitter' },
     { name = 'path' },
     { name = 'spell' },
     { name = 'buffer', keyword_length = 5 },

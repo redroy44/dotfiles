@@ -62,6 +62,7 @@ local plugins = function(use)
   use({ 'hrsh7th/cmp-path' })
   use({ 'hrsh7th/cmp-nvim-lua' })
   use({ 'petertriho/cmp-git', requires = 'nvim-lua/plenary.nvim' })
+  use({ 'ray-x/cmp-treesitter' })
 
   use({
     'hrsh7th/nvim-cmp',
@@ -69,6 +70,8 @@ local plugins = function(use)
       require('plugins.cmp')
     end,
   })
+
+  use({ 'ray-x/lsp_signature.nvim' })
 
   --
   -- Treesitter & Spell Checker
@@ -143,7 +146,7 @@ local plugins = function(use)
   use({
     'navarasu/onedark.nvim',
     config = function()
-      return require('themes.onedark')
+      -- return require('themes.onedark')
     end,
   })
   use({
@@ -152,6 +155,13 @@ local plugins = function(use)
       -- return require('themes.github')
     end,
   })
+  use({
+    'rebelot/kanagawa.nvim',
+    config = function()
+      return require('themes.kanagawa')
+    end,
+  })
+
 
   --
   -- Code Formatter
@@ -220,6 +230,8 @@ local plugins = function(use)
       require('plugins.comment')
     end,
   })
+
+  use({ 'mg979/vim-visual-multi' })
 
   -- https://github.com/sudormrfbin/cheatsheet.nvim
   -- https://github.com/akinsho/bufferline.nvim

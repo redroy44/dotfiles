@@ -97,8 +97,6 @@ homebrew = {
     ];
 
     masApps = {
-      # "NordVPN" = 905953485; sth wrong with version in mas
-      "Bitwarden" = 1352778147;
       "EasyRes" = 688211836;
       "Spark" = 1176895641;
     };
