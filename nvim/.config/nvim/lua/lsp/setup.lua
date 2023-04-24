@@ -6,7 +6,7 @@ local servers = {
   'yamlls',
   -- 'taplo',
   'pyright',
-  'sumneko_lua',
+  'lua_ls',
   'emmet_ls',
   'tsserver',
   'esbonio',

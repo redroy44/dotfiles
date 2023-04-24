@@ -8,9 +8,9 @@ end
 local feedkey = function(key, mode)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
-
+-- autocomplete = false,
 cmp.setup({
-  completion = { autocomplete = false, completeopt = 'menu,menuone,noinsert' },
+  completion = { completeopt = 'menu,menuone,noinsert' },
   window = {
     completion = cmp.config.window.bordered(),
     -- documentation = cmp.config.window.bordered(),
@@ -71,6 +71,7 @@ cmp.setup({
         path = '[path] ',
         buffer = '[buff] ',
         spell = '[spell]',
+        treesitter = '[ts]',
       })[entry.source.name]
       return vim_item
     end,

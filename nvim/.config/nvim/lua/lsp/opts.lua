@@ -6,7 +6,7 @@ local opts = {
 
     signature_setup = {
       floating_window = true,
-      hint_enable = true
+      hint_enable = false
     }
 
     require "lsp_signature".on_attach(signature_setup, bufnr)
