@@ -87,14 +87,14 @@ local plugins = function(use)
   use({ 'nvim-treesitter/nvim-treesitter-context' })
   use({ 'nvim-treesitter/playground' })
   use({ 'windwp/nvim-ts-autotag' })
-  use({
-    'lewis6991/spellsitter.nvim',
-    after = 'nvim-treesitter',
-    commit = 'd2e280a',
-    config = function()
-      require('plugins.spellsitter')
-    end,
-  })
+  -- use({
+  --   'lewis6991/spellsitter.nvim',
+  --   after = 'nvim-treesitter',
+  --   commit = 'd2e280a',
+  --   config = function()
+  --     require('plugins.spellsitter')
+  --   end,
+  -- })
 
   --
   -- Auto pair

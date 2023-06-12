@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgsUnstable, ... }:
 
 {
   imports = [
@@ -40,11 +40,11 @@
     httpie
 
     google-cloud-sdk
-    neovim
+    # neovim
     heroku
     k9s
     kubectl
-    awscli
+    awscli2
     terraform
     terraform-ls
     vault
@@ -57,15 +57,17 @@
     nerdfonts
 
     # Scala
-    jdk17
-    coursier
-    ammonite
-    sbt
-    scala
-    scalafmt
-    scala-cli
+    jdk11
+    # coursier
+    # ammonite
+    # sbt
+    # scala
+    # scalafmt
+    # scala-cli
 
-    python3
+    python310
+    python310Packages.ec2instanceconnectcli
+    python310Packages.pip
     poetry
     nodejs
     nodePackages.npm
@@ -81,6 +83,8 @@
     # iputils # provides `ping`, `ifconfig`, ...
 
     # libuuid # `uuidgen` (already pre-installed on mac)
+  ] ++ [
+    pkgsUnstable.neovim
   ];
 
 }

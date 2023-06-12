@@ -5466,3 +5466,6 @@ ctgen
 pyproject
 C901
 noqa
+upsert
+UUID
+deserialization
