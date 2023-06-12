@@ -14,7 +14,7 @@ M.setup = function()
   }
 
   -- Mappings
-vim.keymap.set('n', '<space>t', function()
+vim.keymap.set('n', '<space>T', function()
   require("dap").repl.toggle()
 end, { noremap = true, silent = true })
 

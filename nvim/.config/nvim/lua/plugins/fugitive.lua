@@ -16,7 +16,7 @@ map('n', '<space>gl', ':G pull<CR>', opts)
 map('n', '<space>grb', ':G rebase ', opts)
 
 -- fetch
-map('n', '<space>gf', ':G fetch ', opts)
+map('n', '<space>gff', ':G fetch ', opts)
 map('n', '<space>gfo', ':G fetch origin<CR>', opts)
 
 -- reset

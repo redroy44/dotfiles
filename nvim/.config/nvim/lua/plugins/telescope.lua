@@ -10,8 +10,8 @@ require('telescope').setup({
     set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
     selection_strategy = 'reset',
     sorting_strategy = 'descending',
-    layout_strategy = 'horizontal',
-    layout_config = { horizontal = { mirror = false }, vertical = { mirror = false } },
+    layout_strategy = 'flex',
+    -- layout_config = { horizontal = { mirror = false }, vertical = { mirror = false } },
     file_previewer = require('telescope.previewers').vim_buffer_cat.new,
     grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
     qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
@@ -60,29 +60,28 @@ local metals = function()
   require('telescope').extensions.metals.commands()
 end
 
-local map = vim.keymap.set
-local opts = { noremap = true, silent = true }
+local wk = require("which-key")
+wk.register({
+  ["<C-p>"] = { function() project_files() end, "Search Project Files" }
+})
+
+wk.register({
+  ["pf"] = { function() grep_string() end , "Grep String"},
+  ["mt"] = { function() metals() end , "Metals"},
+  ["j"] = { function() return require('telescope.builtin').jumplist() end , "Jumplist"},
+  ["man"] = { function() return require('telescope.builtin').man_pages() end , "Man Pages"},
+  ["="] = { function() return require('telescope.builtin').spell_suggest() end , "Spell Suggest"},
+  ["hi"] = { function() return require('telescope.builtin').highlights() end , "Highlights"},
+  ["reg"] = { function() return require('telescope.builtin').registers() end , "Registers"},
+  ["gg"] = { function() return require('telescope.builtin').live_grep() end , "Live Grep"},
+  ["wc"] = { function() return require('telescope.builtin').lsp_document_symbols() end , "Document Symbols"},
+  ["wd"] = { function() return require('telescope.builtin').lsp_dynamic_workspace_symbols() end , "Dynamic Workspace Symbols"},
+  ["<Tab>"] = { function() return require('telescope.builtin').buffers() end , "Buffers"},
+}, { prefix = "<space>" })
 
 -- Custom key-binding
 -- stylua: ignore start
-map('n', '<space>vrc', function() nvim_dotfiles() end, opts)
-map('n', '<space>ktty', function() kitty_dotfiles() end, opts)
-map('n', '<C-p>', function() project_files() end, opts)
-
-map('n', '<space>pf', function() grep_string() end, opts)
-map('n', '<space>mt', function() metals() end, opts)
-
--- Builtin key-binding
-map('n', '<space>j', function() return require('telescope.builtin').jumplist() end, opts)
-map('n', '<space>man', function() return require('telescope.builtin').man_pages() end, opts)
-map('n', '<space>=', function() return require('telescope.builtin').spell_suggest() end, opts)
-map('n', '<space>hi', function() return require('telescope.builtin').highlights() end, opts)
-map('n', '<space>reg', function() return require('telescope.builtin').registers() end, opts)
-
-map('n', '<space>gr', function() return require('telescope.builtin').live_grep() end, opts)
-map('n', '<space>wc', function() return require('telescope.builtin').lsp_document_symbols() end, opts)
-map('n', '<space>wd', function() return require('telescope.builtin').lsp_dynamic_workspace_symbols() end, opts)
-map('n', '<space><Tab>', function() return require('telescope.builtin').buffers() end, opts)
-
+-- map('n', '<space>vrc', function() nvim_dotfiles() end, opts)
+-- map('n', '<space>ktty', function() kitty_dotfiles() end, opts)
 
 -- stylua: ignore end

@@ -11,7 +11,8 @@ local servers = {
   'tsserver',
   'esbonio',
   'dockerls',
-  'terraformls'
+  'terraformls',
+  'sqlls'
 }
 
 lsp_installer.setup({

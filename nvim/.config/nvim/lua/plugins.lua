@@ -237,7 +237,7 @@ local plugins = function(use)
       require('plugins.lualine')
     end,
   })
-  use({ 'tpope/vim-surround' })
+  -- use({ 'tpope/vim-surround' })
   use({ 'lilydjwg/colorizer' })
   -- use({
   --   'Pocco81/AutoSave.nvim',
@@ -256,7 +256,23 @@ local plugins = function(use)
 
   -- https://github.com/sudormrfbin/cheatsheet.nvim
   -- https://github.com/akinsho/bufferline.nvim
-  -- https://github.com/folke/which-key.nvim
+
+  -- New
+
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+      require("which-key").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
+
+
 end
 
 require('packer').startup({

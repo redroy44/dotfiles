@@ -10,9 +10,13 @@ local feedkey = function(key, mode)
 end
 -- autocomplete = false,
 cmp.setup({
-  completion = { completeopt = 'menu,menuone,noinsert' },
+  completion = { 
+    -- completeopt = 'menu,menuone,noinsert',
+    keyword_length = 3
+   },
   window = {
     completion = cmp.config.window.bordered(),
+    documentation = cmp.config.disable
     -- documentation = cmp.config.window.bordered(),
   },
   snippet = {
@@ -59,13 +63,17 @@ cmp.setup({
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
   },
-
+  performance = {
+    debounce = 500,
+    throttle = 550,
+    fetching_timeout = 80
+  },
   formatting = {
     format = function(entry, vim_item)
       -- set a name for each source
       vim_item.menu = ({
         cmp_git = '[git]',
-        nvim_lsp = ' [lsp]',
+        nvim_lsp = '[lsp]',
         nvim_lua = '[lua]',
         vsnip = ' [snip]',
         path = '[path] ',
