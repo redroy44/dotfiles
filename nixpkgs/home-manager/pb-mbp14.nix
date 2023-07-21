@@ -39,6 +39,8 @@
     iterm2
     httpie
 
+    google-cloud-sdk
+    # neovim
     heroku
     k9s
     kubectl
@@ -49,9 +51,9 @@
     jq
     pre-commit
 
-    fira-code
-    fira-code-symbols
-    jetbrains-mono
+    # fira-code
+    # fira-code-symbols
+    # jetbrains-mono
     nerdfonts
 
     # Scala
@@ -65,7 +67,6 @@
     scala-cli
 
     python310
-    python310Packages.ec2instanceconnectcli
     python310Packages.pip
     poetry
     nodejs
