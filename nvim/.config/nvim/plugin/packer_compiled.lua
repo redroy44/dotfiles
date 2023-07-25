@@ -79,6 +79,12 @@ _G.packer_plugins = {
     path = "/Users/pbandurski/.local/share/nvim/site/pack/packer/start/FixCursorHold.nvim",
     url = "https://github.com/antoinemadec/FixCursorHold.nvim"
   },
+  ["auto-save.nvim"] = {
+    config = { "\27LJ\2\n0\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\21plugins.autosave\frequire\0" },
+    loaded = true,
+    path = "/Users/pbandurski/.local/share/nvim/site/pack/packer/start/auto-save.nvim",
+    url = "https://github.com/Pocco81/auto-save.nvim"
+  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/Users/pbandurski/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -158,7 +164,7 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-lualine/lualine.nvim"
   },
   neotest = {
-    config = { "\27LJ\2\n›\1\0\0\a\0\a\1\0156\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\5\0004\3\3\0006\4\0\0'\6\3\0B\4\2\0025\6\4\0B\4\2\0?\4\0\0=\3\6\2B\0\2\1K\0\1\0\radapters\1\0\0\1\0\2\vrunner\bsbt\14framework\14scalatest\18neotest-scala\nsetup\fneotest\frequire\3€€À™\4\0" },
+    config = { "\27LJ\2\nï¿½\1\0\0\a\0\a\1\0156\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\5\0004\3\3\0006\4\0\0'\6\3\0B\4\2\0025\6\4\0B\4\2\0?\4\0\0=\3\6\2B\0\2\1K\0\1\0\radapters\1\0\0\1\0\2\14framework\14scalatest\vrunner\bsbt\18neotest-scala\nsetup\fneotest\frequire\3ï¿½ï¿½ï¿½ï¿½\4\0" },
     loaded = true,
     path = "/Users/pbandurski/.local/share/nvim/site/pack/packer/start/neotest",
     url = "https://github.com/nvim-neotest/neotest"
@@ -283,6 +289,11 @@ _G.packer_plugins = {
     path = "/Users/pbandurski/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
     url = "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
   },
+  ["telescope-vim-bookmarks.nvim"] = {
+    loaded = true,
+    path = "/Users/pbandurski/.local/share/nvim/site/pack/packer/start/telescope-vim-bookmarks.nvim",
+    url = "https://github.com/tom-anders/telescope-vim-bookmarks.nvim"
+  },
   ["telescope.nvim"] = {
     config = { "\27LJ\2\n1\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\22plugins.telescope\frequire\0" },
     loaded = false,
@@ -290,6 +301,11 @@ _G.packer_plugins = {
     only_cond = false,
     path = "/Users/pbandurski/.local/share/nvim/site/pack/packer/opt/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["vim-bookmarks"] = {
+    loaded = true,
+    path = "/Users/pbandurski/.local/share/nvim/site/pack/packer/start/vim-bookmarks",
+    url = "https://github.com/MattesGroeger/vim-bookmarks"
   },
   ["vim-fugitive"] = {
     config = { "\27LJ\2\n0\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\21plugins.fugitive\frequire\0" },
@@ -336,6 +352,10 @@ time([[Defining packer_plugins]], false)
 time([[Config for nvim-cmp]], true)
 try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16plugins.cmp\frequire\0", "config", "nvim-cmp")
 time([[Config for nvim-cmp]], false)
+-- Config for: neotest
+time([[Config for neotest]], true)
+try_loadstring("\27LJ\2\nï¿½\1\0\0\a\0\a\1\0156\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\5\0004\3\3\0006\4\0\0'\6\3\0B\4\2\0025\6\4\0B\4\2\0?\4\0\0=\3\6\2B\0\2\1K\0\1\0\radapters\1\0\0\1\0\2\14framework\14scalatest\vrunner\bsbt\18neotest-scala\nsetup\fneotest\frequire\3ï¿½ï¿½ï¿½ï¿½\4\0", "config", "neotest")
+time([[Config for neotest]], false)
 -- Config for: nvim-comment
 time([[Config for nvim-comment]], true)
 try_loadstring("\27LJ\2\n/\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\20plugins.comment\frequire\0", "config", "nvim-comment")
@@ -350,7 +370,7 @@ try_loadstring("\27LJ\2\n+\0\0\3\0\2\0\0036\0\0\0'\2\1\0D\0\2\0\20themes.kanagaw
 time([[Config for kanagawa.nvim]], false)
 -- Config for: neotest
 time([[Config for neotest]], true)
-try_loadstring("\27LJ\2\n›\1\0\0\a\0\a\1\0156\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\5\0004\3\3\0006\4\0\0'\6\3\0B\4\2\0025\6\4\0B\4\2\0?\4\0\0=\3\6\2B\0\2\1K\0\1\0\radapters\1\0\0\1\0\2\vrunner\bsbt\14framework\14scalatest\18neotest-scala\nsetup\fneotest\frequire\3€€À™\4\0", "config", "neotest")
+try_loadstring("\27LJ\2\nï¿½\1\0\0\a\0\a\1\0156\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\5\0004\3\3\0006\4\0\0'\6\3\0B\4\2\0025\6\4\0B\4\2\0?\4\0\0=\3\6\2B\0\2\1K\0\1\0\radapters\1\0\0\1\0\2\vrunner\bsbt\14framework\14scalatest\18neotest-scala\nsetup\fneotest\frequire\3ï¿½ï¿½ï¿½ï¿½\4\0", "config", "neotest")
 time([[Config for neotest]], false)
 -- Config for: nvim-lsp-installer
 time([[Config for nvim-lsp-installer]], true)

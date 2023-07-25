@@ -18,10 +18,10 @@ require('telescope').setup({
     mappings = { i = { ['<esc>'] = actions.close, ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist } },
     extensions = {
       fzf = {
-        fuzzy = true, -- false will only do exact matching
+        fuzzy = true,                   -- false will only do exact matching
         override_generic_sorter = true, -- override the generic sorter
-        override_file_sorter = true, -- override the file sorter
-        case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
+        override_file_sorter = true,    -- override the file sorter
+        case_mode = 'smart_case',       -- or "ignore_case" or "respect_case"
         -- the default case_mode is "smart_case"
       },
     },
@@ -30,6 +30,7 @@ require('telescope').setup({
 -- To get fzf loaded and working with telescope
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('dap')
+require('telescope').load_extension('vim_bookmarks')
 
 local dotfile_dir = '$HOME/.dotfiles'
 
@@ -66,17 +67,20 @@ wk.register({
 })
 
 wk.register({
-  ["pf"] = { function() grep_string() end , "Grep String"},
-  ["mt"] = { function() metals() end , "Metals"},
-  ["j"] = { function() return require('telescope.builtin').jumplist() end , "Jumplist"},
-  ["man"] = { function() return require('telescope.builtin').man_pages() end , "Man Pages"},
-  ["="] = { function() return require('telescope.builtin').spell_suggest() end , "Spell Suggest"},
-  ["hi"] = { function() return require('telescope.builtin').highlights() end , "Highlights"},
-  ["reg"] = { function() return require('telescope.builtin').registers() end , "Registers"},
-  ["gg"] = { function() return require('telescope.builtin').live_grep() end , "Live Grep"},
-  ["wc"] = { function() return require('telescope.builtin').lsp_document_symbols() end , "Document Symbols"},
-  ["wd"] = { function() return require('telescope.builtin').lsp_dynamic_workspace_symbols() end , "Dynamic Workspace Symbols"},
-  ["<Tab>"] = { function() return require('telescope.builtin').buffers() end , "Buffers"},
+  ["pf"] = { function() grep_string() end, "Grep String" },
+  ["mt"] = { function() metals() end, "Metals" },
+  ["j"] = { function() return require('telescope.builtin').jumplist() end, "Jumplist" },
+  ["man"] = { function() return require('telescope.builtin').man_pages() end, "Man Pages" },
+  ["="] = { function() return require('telescope.builtin').spell_suggest() end, "Spell Suggest" },
+  ["hi"] = { function() return require('telescope.builtin').highlights() end, "Highlights" },
+  ["reg"] = { function() return require('telescope.builtin').registers() end, "Registers" },
+  ["gg"] = { function() return require('telescope.builtin').live_grep() end, "Live Grep" },
+  ["wc"] = { function() return require('telescope.builtin').lsp_document_symbols() end, "Document Symbols" },
+  ["wd"] = { function() return require('telescope.builtin').lsp_dynamic_workspace_symbols() end,
+    "Dynamic Workspace Symbols" },
+  ["bb"] = { function() return require('telescope').extensions.vim_bookmarks.all() end, "All Bookmarks" },
+  ["<Tab>"] = { function() return require('telescope.builtin').buffers() end, "Buffers" },
+  ["dd"] = { function() return require('telescope.builtin').diagnostics() end, "Diagnostics" },
 }, { prefix = "<space>" })
 
 -- Custom key-binding

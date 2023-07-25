@@ -42,3 +42,6 @@ map('n', '<space>so', ':luafile %<CR>', opts)
 
 -- Change word
 map('n', '<space><F2>', ':%s/\\<<C-r><C-w>\\>//g<Left><Left>', opts)
+
+-- Esc
+map('i', '<C-c>', '<Esc>', opts)

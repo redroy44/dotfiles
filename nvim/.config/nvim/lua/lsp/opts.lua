@@ -40,10 +40,11 @@ local opts = {
     buf_set_keymap('n', '<space>D', function() vim.lsp.buf.type_definition() end, opts)
     buf_set_keymap('n', '<F2>', function() vim.lsp.buf.rename() end, opts)
     buf_set_keymap('n', 'gr', function() vim.lsp.buf.references() end, opts)
-    buf_set_keymap('n', '<space>el', "<cmd>lua vim.diagnostic.show_line_diagnostics({float={border='rounded'}})<CR>", opts)
+    buf_set_keymap('n', '<space>el', "<cmd>lua vim.diagnostic.show_line_diagnostics({float={border='rounded'}})<CR>",
+      opts)
     buf_set_keymap('n', '[d', "<cmd>lua vim.diagnostic.goto_prev({float={border='rounded'}})<CR>", opts)
     buf_set_keymap('n', ']d', "<cmd>lua vim.diagnostic.goto_next({float={border='rounded'}})<CR>", opts)
-    buf_set_keymap('n', '<space>q', function() vim.diagnostic.setloclist() end, opts)
+    buf_set_keymap('n', '<space>ee', function() vim.diagnostic.setloclist() end, opts)
     buf_set_keymap('n', '<space>ff', function() vim.lsp.buf.format() end, opts)
     buf_set_keymap('n', '<space>cl', function() vim.lsp.codelens.run() end, opts)
     buf_set_keymap('n', '<space>ca', function() vim.lsp.buf.code_action() end, opts)

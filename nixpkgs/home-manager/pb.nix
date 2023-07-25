@@ -70,6 +70,7 @@
     poetry
     nodejs
     nodePackages.npm
+    nodePackages."@foam-cli"
 
     colima
     docker-client

@@ -239,12 +239,12 @@ local plugins = function(use)
   })
   -- use({ 'tpope/vim-surround' })
   use({ 'lilydjwg/colorizer' })
-  -- use({
-  --   'Pocco81/AutoSave.nvim',
-  --   config = function()
-  --     require('plugins.autosave')
-  --   end,
-  -- })
+  use({
+    'Pocco81/auto-save.nvim',
+    config = function()
+      require('plugins.autosave')
+    end,
+  })
   use({
     'terrortylor/nvim-comment',
     config = function()
@@ -272,7 +272,10 @@ local plugins = function(use)
     end
   }
 
-
+  use({
+    'tom-anders/telescope-vim-bookmarks.nvim',
+    requires = { 'MattesGroeger/vim-bookmarks' },
+  })
 end
 
 require('packer').startup({
