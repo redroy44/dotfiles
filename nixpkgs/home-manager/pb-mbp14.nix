@@ -38,6 +38,7 @@
     graphviz
     iterm2
     httpie
+    gdu
 
     google-cloud-sdk
     # neovim
@@ -50,10 +51,8 @@
     vault
     jq
     pre-commit
+    lazygit
 
-    # fira-code
-    # fira-code-symbols
-    # jetbrains-mono
     nerdfonts
 
     # Scala

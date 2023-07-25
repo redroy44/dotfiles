@@ -38,6 +38,7 @@
     graphviz
     iterm2
     httpie
+    gdu
 
     heroku
     k9s
@@ -48,10 +49,8 @@
     vault
     jq
     pre-commit
+    lazygit
 
-    fira-code
-    fira-code-symbols
-    jetbrains-mono
     nerdfonts
 
     # Scala
@@ -70,11 +69,10 @@
     poetry
     nodejs
     nodePackages.npm
-    nodePackages."@foam-cli"
 
-    colima
-    docker-client
-    docker-compose
+    # colima
+    docker
+    # docker-compose
     
   ] ++ lib.optionals stdenv.isDarwin [
     coreutils # provides `dd` with --status=progress
