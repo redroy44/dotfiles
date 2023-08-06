@@ -66,6 +66,7 @@
     python310
     python310Packages.ec2instanceconnectcli
     python310Packages.pip
+    python310Packages.virtualenv
     poetry
     nodejs
     nodePackages.npm
@@ -82,7 +83,8 @@
 
     # libuuid # `uuidgen` (already pre-installed on mac)
   ] ++ [
-    pkgsUnstable.neovim
+      pkgsUnstable.neovim
+      pkgsUnstable.pyenv
   ];
 
 }
