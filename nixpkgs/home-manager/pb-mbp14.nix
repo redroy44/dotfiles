@@ -65,11 +65,16 @@
     scalafmt
     scala-cli
 
+    # Python
     python310
     python310Packages.pip
     poetry
     nodejs
     nodePackages.npm
+
+    # Rust
+    rustc
+    cargo
 
     colima
     docker-client
