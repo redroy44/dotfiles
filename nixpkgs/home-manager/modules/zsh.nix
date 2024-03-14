@@ -34,6 +34,7 @@
       la = "ls -a"; 
       lla = "ls -la";
       lt = "ls --tree --depth 5";
+      sbt = "sbt -java-home ~/.nix-profile";
     };
 
   };

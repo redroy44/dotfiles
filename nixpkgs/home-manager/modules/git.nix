@@ -36,6 +36,7 @@
       "**/.DS_Store"
       ".direnv"
       ".envrc"
+      ".env"
     ];
 
     extraConfig = {

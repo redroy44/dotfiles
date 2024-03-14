@@ -2,11 +2,11 @@
 {
   programs.kitty = {
     enable = true;
-    theme = "kanagawabones";
+    theme = "Tokyo Night";
 
     font = {
       name = "FiraCode Nerd Font Mono";
-      size = 12;
+      size = 16;
     };
 
     settings = {

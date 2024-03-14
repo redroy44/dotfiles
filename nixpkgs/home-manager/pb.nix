@@ -43,13 +43,14 @@
     heroku
     k9s
     kubectl
-    awscli2
     terraform
     terraform-ls
     vault
     jq
     pre-commit
     lazygit
+    gh
+    kcat
 
     nerdfonts
 
@@ -61,7 +62,6 @@
     sbt
     scala
     scalafmt
-    scala-cli
 
     python310
     python310Packages.ec2instanceconnectcli
@@ -70,6 +70,7 @@
     poetry
     nodejs
     nodePackages.npm
+    yarn
 
     # colima
     docker
@@ -85,6 +86,8 @@
   ] ++ [
       pkgsUnstable.neovim
       pkgsUnstable.pyenv
+      pkgsUnstable.scala-cli
+      pkgsUnstable.awscli2
   ];
 
 }
