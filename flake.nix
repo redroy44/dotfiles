@@ -74,6 +74,19 @@
           }];
           inputs = { inherit darwin nixpkgs; };
         };
+        macbook-pro-16 = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [ ./nixpkgs/darwin/macbook-pro-16/configuration.nix 
+          home-manager.darwinModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.pbandurski = { 
+              imports = [ ./nixpkgs/home-manager/pb-mbp16.nix ]; 
+            };
+            home-manager.extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; };
+          }];
+          inputs = { inherit darwin nixpkgs; };
+        };
       };
     };
 }
