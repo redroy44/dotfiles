@@ -45,7 +45,6 @@
     heroku
     k9s
     kubectl
-    awscli2
     terraform
     terraform-ls
     vault
@@ -63,14 +62,16 @@
     sbt
     scala
     scalafmt
-    scala-cli
+    # scala-cli # install using coursier
 
-    # Python
     python310
+    python310Packages.ec2instanceconnectcli
     python310Packages.pip
+    python310Packages.virtualenv
     poetry
     nodejs
     nodePackages.npm
+    yarn
 
     # Rust
     rustc
@@ -88,7 +89,7 @@
 
     # libuuid # `uuidgen` (already pre-installed on mac)
   ] ++ [
-    pkgsUnstable.neovim
+    pkgsUnstable.neovim pkgsUnstable.awscli2
   ];
 
 }

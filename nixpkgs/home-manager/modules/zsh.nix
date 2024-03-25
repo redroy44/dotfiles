@@ -9,7 +9,7 @@
 
     envExtra = (builtins.concatStringsSep "\n" [
       "KUBECONFIG=\"$HOME/.kube/config\""
-      "PATH=\"/usr/local/bin:$PATH\""
+      "PATH=\"/usr/local/bin:$PATH:/Users/pbandurski/Library/Application Support/Coursier/bin\""
       "ZSH_DISABLE_COMPFIX=\"true\""
     ]);
 
@@ -36,6 +36,5 @@
       lt = "ls --tree --depth 5";
       sbt = "sbt -java-home ~/.nix-profile";
     };
-
   };
 }

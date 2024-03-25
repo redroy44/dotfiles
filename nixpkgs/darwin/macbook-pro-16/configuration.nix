@@ -63,11 +63,6 @@ homebrew = {
       # lockfiles = true;
     };
 
-    taps = [
-      "homebrew/core"
-      "homebrew/cask"
-    ];
-
     casks = [
 
       # Dev
@@ -81,6 +76,7 @@ homebrew = {
       "intellij-idea-ce"
       "slack"
       "brave-browser"
+      "arc"
       "obsidian"
       "itsycal"
       "zoom"
@@ -92,6 +88,8 @@ homebrew = {
     masApps = {
       "EasyRes" = 688211836;
       "Spark" = 6445813049;
+      "Bitwarden" = 1352778147;
+      "Battery Monitor: Health, Info" = 836505650;
     };
   };
 
