@@ -68,11 +68,6 @@ homebrew = {
       # lockfiles = true;
     };
 
-    taps = [
-      "homebrew/core"
-      "homebrew/cask"
-    ];
-
     casks = [
 
       # Dev

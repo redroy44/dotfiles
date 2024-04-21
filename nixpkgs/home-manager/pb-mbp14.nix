@@ -73,8 +73,8 @@
     nodePackages.npm
 
     # Rust
-    rustc
-    cargo
+    rustup
+    postgresql
 
     colima
     docker-client
