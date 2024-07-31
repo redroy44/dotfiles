@@ -63,6 +63,15 @@ homebrew = {
       # lockfiles = true;
     };
 
+    taps = [
+      "dhth/tap"
+    ];
+
+    brews = [
+      # "bitwarden-cli"
+      "cueitup"
+    ];
+
     casks = [
 
       # Dev
@@ -71,6 +80,7 @@ homebrew = {
       "postman"
       "rectangle"
 
+      "raycast"
       "postico"
       "visual-studio-code"
       "intellij-idea-ce"

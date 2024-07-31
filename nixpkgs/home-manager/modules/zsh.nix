@@ -2,9 +2,9 @@
 {
   programs.zsh = {
     enable = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     # completionInit = "autoload -U compinit && compinit -u";
 
     envExtra = (builtins.concatStringsSep "\n" [

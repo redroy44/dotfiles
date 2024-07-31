@@ -10,7 +10,7 @@
     # ./modules/neovim.nix # doesn't support lua config
   ];
 
-  home.stateVersion = "23.05";
+  home.stateVersion = "24.05";
 
   fonts.fontconfig.enable = true;
 
@@ -49,8 +49,11 @@
     terraform-ls
     vault
     jq
+    yq
     pre-commit
     lazygit
+    gh
+    kcat
 
     nerdfonts
 
@@ -69,9 +72,10 @@
     python310Packages.pip
     python310Packages.virtualenv
     poetry
-    nodejs
-    nodePackages.npm
-    yarn
+
+    nodejs_18
+    #nodePackages.npm
+    #yarn
 
     # Rust
     rustc
@@ -80,7 +84,10 @@
     colima
     docker-client
     docker-compose
-    
+    lazydocker
+
+    nix-search-cli
+
   ] ++ lib.optionals stdenv.isDarwin [
     coreutils # provides `dd` with --status=progress
     # wifi-password

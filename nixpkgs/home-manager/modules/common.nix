@@ -14,6 +14,7 @@
     htop
     bottom
     fzf
+    fd
     neofetch # fancy system + hardware info
     lsd
     tree

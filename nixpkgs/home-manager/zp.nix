@@ -10,7 +10,7 @@
     # ./modules/neovim.nix # doesn't support lua config
   ];
 
-  home.stateVersion = "23.05";
+  home.stateVersion = "24.05";
 
   fonts.fontconfig.enable = true;
 
