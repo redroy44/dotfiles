@@ -1,19 +1,20 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
     darwin = {
-      url = "github:lnl7/nix-darwin/master";
+      url = "github:lnl7/nix-darwin/nix-darwin-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs @ { self, flake-utils, darwin, nixpkgs, nixpkgsUnstable, home-manager }:
+  outputs = inputs @ { self, flake-utils, darwin, nixpkgs, nixpkgsUnstable, nixpkgs-terraform, home-manager }:
 
     flake-utils.lib.eachDefaultSystem
       (system:
@@ -83,7 +84,9 @@
             home-manager.users.pbandurski = { 
               imports = [ ./nixpkgs/home-manager/pb-mbp16.nix ]; 
             };
-            home-manager.extraSpecialArgs = { pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; };
+            home-manager.extraSpecialArgs = { 
+              pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; 
+              terraform = nixpkgs-terraform.packages.aarch64-darwin."1.5.7";};
           }];
           inputs = { inherit darwin nixpkgs; };
         };

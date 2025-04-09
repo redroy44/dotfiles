@@ -19,7 +19,7 @@
   nix = {
     package = pkgs.nix;
 
-    settings.auto-optimise-store = true;
+    optimise.automatic = true;
 
     extraOptions = ''
       # needed for nix-direnv

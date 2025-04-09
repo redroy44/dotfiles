@@ -15,7 +15,6 @@
     delta = {
       enable = true;
       options = {
-        syntax-theme = "solarized-dark";
         side-by-side = true;
       };
     };
@@ -39,6 +38,17 @@
       ".env"
     ];
 
+    aliases = {
+      # `git log` with patches shown with difftastic.
+      dl = "-c diff.external=difft log -p --ext-diff";
+
+      # Show the most recent commit with difftastic.
+      ds = "-c diff.external=difft show --ext-diff";
+
+      # `git diff` with difftastic.
+      dft = "-c diff.external=difft diff";
+    };
+
     extraConfig = {
       pull.rebase = true;
       init.defaultBranch = "main";
@@ -47,6 +57,10 @@
       core.editor = "nvim";
       core.fileMode = false;
       core.ignorecase = false;
+
+      merge.conflictstyle = "zdiff3";
+
+      rerere.enabled = true;
     };
   };
 }

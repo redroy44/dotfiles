@@ -34,6 +34,7 @@
     vault
     jq
     pre-commit
+    difftastic
 
     fira-code
     fira-code-symbols
