@@ -6,6 +6,14 @@
   programs.direnv.enableZshIntegration = true;
   programs.direnv.nix-direnv.enable = true;
 
+  programs.delta = {
+      enable = true;
+      enableGitIntegration = true
+      options = {
+        side-by-side = true;
+      };
+    };
+
   home.packages = with pkgs; [
     gnupg
     tmux
@@ -28,9 +36,8 @@
     heroku
     k9s
     kubectl
+    kubernetes-helm
     awscli
-    terraform
-    terraform-ls
     vault
     jq
     pre-commit

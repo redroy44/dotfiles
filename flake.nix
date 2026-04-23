@@ -1,20 +1,24 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-25.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/master";
     nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mcphub-nvim.url = "github:ravitemer/mcphub.nvim";
     flake-utils.url = "github:numtide/flake-utils";
     darwin = {
-      url = "github:lnl7/nix-darwin/nix-darwin-24.11";
+      url = "github:lnl7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixpkgs-ghostty = {
+      url = "github:ghostty-org/ghostty";
     };
   };
 
-  outputs = inputs @ { self, flake-utils, darwin, nixpkgs, nixpkgsUnstable, nixpkgs-terraform, home-manager }:
+  outputs = inputs @ { self, flake-utils, darwin, nixpkgs, nixpkgsUnstable, nixpkgs-terraform, nixpkgs-ghostty, home-manager, mcphub-nvim }:
 
     flake-utils.lib.eachDefaultSystem
       (system:
@@ -79,14 +83,17 @@
           system = "aarch64-darwin";
           modules = [ ./nixpkgs/darwin/macbook-pro-16/configuration.nix 
           home-manager.darwinModules.home-manager {
-            home-manager.useGlobalPkgs = true;
+            home-manager.useGlobalPkgs = false;
             home-manager.useUserPackages = true;
             home-manager.users.pbandurski = { 
               imports = [ ./nixpkgs/home-manager/pb-mbp16.nix ]; 
             };
             home-manager.extraSpecialArgs = { 
               pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; 
-              terraform = nixpkgs-terraform.packages.aarch64-darwin."1.5.7";};
+              terraform = nixpkgs-terraform.packages.aarch64-darwin."1.5.7";
+              ghostty = nixpkgs-ghostty.packages.aarch64-darwin.default;
+              mcphub-nvim = mcphub-nvim.packages.aarch64-darwin.default;
+            };
           }];
           inputs = { inherit darwin nixpkgs; };
         };

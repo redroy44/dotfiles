@@ -1,8 +1,8 @@
-{ config, pkgs, lib, libs, ... }:
+{ config, pkgs, lib, libs, ghostty ... }:
 {
   programs.ghostty = {
     enable = true;
-   # package = "pkgs.ghostty";
+    package = "ghostty";
     enableZshIntegration = true;
   #  installVimSyntax = false;
     settings = {

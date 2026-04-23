@@ -5,6 +5,7 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.problems.handlers.dlinfo.broken = "warn";
 
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = false;
@@ -14,9 +15,15 @@
     home = "/Users/pbandurski";
   };
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  # Fonts via Homebrew instead to avoid dlinfo dependency
+  # fonts.packages = with pkgs; [
+  #   nerd-fonts.fira-code
+  #   fira-code
+  #   fira-code-symbols
+  # ];
+
   nix = {
+    enable = true;
     package = pkgs.nix;
 
     optimise.automatic = true;
@@ -73,12 +80,18 @@ homebrew = {
     ];
 
     casks = [
+      # Fonts
+      "font-fira-code"
+      "font-fira-code-nerd-font"
 
       # Dev
       # "docker"
       "iterm2"
       "postman"
       "rectangle"
+
+      "ghostty"
+      # "gleam"
 
       "raycast"
       "postico"
@@ -91,14 +104,16 @@ homebrew = {
       "itsycal"
       "zoom"
 
+      # Productivity
+      "spark"
+      "bitwarden"
+
       # Media
       "spotify"
     ];
 
     masApps = {
       "EasyRes" = 688211836;
-      "Spark" = 6445813049;
-      "Bitwarden" = 1352778147;
       "Battery Monitor: Health, Info" = 836505650;
     };
   };

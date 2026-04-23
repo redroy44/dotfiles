@@ -9,7 +9,7 @@
 
     envExtra = (builtins.concatStringsSep "\n" [
       "KUBECONFIG=\"$HOME/.kube/config\""
-      "PATH=\"/usr/local/bin:$PATH:/Users/pbandurski/Library/Application Support/Coursier/bin\""
+      "PATH=\"$HOME/.npm-global/bin:$HOME/.cargo/bin:$HOME/.local/bin:/usr/local/bin:$PATH:/Users/pbandurski/Library/Application Support/Coursier/bin\""
       "ZSH_DISABLE_COMPFIX=\"true\""
     ]);
 
@@ -18,6 +18,8 @@
       theme = "lambda";
       plugins = [
         # "ssh-agent"
+        "aws"
+        "kitty"
         "git"
         "sbt"
         "python"
@@ -35,6 +37,7 @@
       lla = "ls -la";
       lt = "ls --tree --depth 5";
       sbt = "sbt -java-home ~/.nix-profile";
+      a = "source start_aws";
     };
   };
 }

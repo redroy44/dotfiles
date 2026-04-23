@@ -1,19 +1,22 @@
-{ config, lib, pkgs, pkgsUnstable, terraform, ... }:
+{ config, lib, pkgs, pkgsUnstable, ghostty, mcphub-nvim, ... }:
 
 {
   imports = [
-    # ./modules/home-manager.nix
+    ./modules/home-manager.nix
     ./modules/zsh.nix
     ./modules/git.nix
     ./modules/starship.nix
     ./modules/kitty.nix
-    ./modules/ghostty.nix
+    ./modules/yazi.nix
+    # ./modules/ghostty.nix
     # ./modules/neovim.nix # doesn't support lua config
   ];
 
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.11";
 
-  fonts.fontconfig.enable = true;
+  #fonts.fontconfig.enable = true;
+
+  fonts.fontconfig.enable = false;
 
   home.username = "pbandurski";
   home.homeDirectory = "/Users/pbandurski";
@@ -31,6 +34,14 @@
   programs.autojump = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      side-by-side = true;
+    };
   };
 
   home.packages = with pkgs; [
@@ -53,14 +64,18 @@
     difftastic
     fd
 
-    
+    just
     awsume
+    aws-sso-util
     google-cloud-sdk
     # neovim
     heroku
     k9s
     kubectl
+    kubernetes-helm
+    tenv
     terraform-ls
+
     tflint
     vault
     jq
@@ -70,7 +85,7 @@
     gh
     kcat
 
-    nerdfonts
+    # nerdfonts
 
     # Scala
     jdk21
@@ -82,13 +97,15 @@
     scalafmt
     # scala-cli # install using coursier
 
-    python310
-    python310Packages.ec2instanceconnectcli
-    python310Packages.pip
-    python310Packages.virtualenv
+    python314
+    # python315
+    # python314Packages.ec2instanceconnectcli
+    # python314Packages.pip
+    # python314Packages.virtualenv
     poetry
 
     nodejs_20
+    bun
     #nodePackages.npm
     #yarn
 
@@ -113,9 +130,11 @@
 
     # libuuid # `uuidgen` (already pre-installed on mac)
   ] ++ [
+    # pkgsUnstable.gleam
+    pkgsUnstable.vectorcode
     pkgsUnstable.neovim 
     pkgsUnstable.awscli2
-    terraform
+    # pkgsUnstable.uv
   ];
 
 }

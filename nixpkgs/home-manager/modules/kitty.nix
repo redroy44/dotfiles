@@ -23,6 +23,7 @@
       macos_show_window_title_in = "window";
 
       tab_bar_style = "powerline";
+      allow_remote_control = "yes";
     };
 
     keybindings = {

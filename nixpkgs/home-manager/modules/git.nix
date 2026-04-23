@@ -2,8 +2,8 @@
 {
   programs.git = {
     enable = true;
-    userName = "Piotr Bandurski";
-    userEmail = "redroy44@gmail.com";
+    settings.user.name = "Piotr Bandurski";
+    settings.user.email = "redroy44@gmail.com";
 
     includes = [
       { 
@@ -12,12 +12,7 @@
       }
     ];
 
-    delta = {
-      enable = true;
-      options = {
-        side-by-side = true;
-      };
-    };
+
 
     signing = {
       key = "07A01229AAA846E1";
@@ -28,6 +23,7 @@
       "**/project/metals.sbt"
       "**/.idea/"
       "**/.vscode/settings.json"
+      "**/.cursor/"
       "**/.bloop/"
       "**/.bsp/"
       "**/.scala-build/"
@@ -36,9 +32,11 @@
       ".direnv"
       ".envrc"
       ".env"
+      "**/.claude/"
+      "CLAUDE.md"
     ];
 
-    aliases = {
+    settings.alias = {
       # `git log` with patches shown with difftastic.
       dl = "-c diff.external=difft log -p --ext-diff";
 
@@ -49,7 +47,7 @@
       dft = "-c diff.external=difft diff";
     };
 
-    extraConfig = {
+    settings = {
       pull.rebase = true;
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
@@ -63,4 +61,5 @@
       rerere.enabled = true;
     };
   };
+  
 }

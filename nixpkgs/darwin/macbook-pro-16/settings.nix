@@ -25,13 +25,19 @@
       QuitMenuItem = true;
     };
 
+
+
     loginwindow.GuestEnabled = false;
 
-    alf.globalstate = 1;
     SoftwareUpdate.AutomaticallyInstallMacOSUpdates = true;
 
   };
 
+  system.primaryUser = "pbandurski";
+
+  networking.applicationFirewall.enable = true;
+  networking.applicationFirewall.blockAllIncoming = true;
+
   # Add ability to used TouchID for sudo authentication
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 }
