@@ -16,7 +16,7 @@ the thing that actually applied the defaults. Phase 5 removes it.
 | `53e7559` | Phase 2: 57 `[tools]` + 10 brew-backend packages, `mise.lock` |
 | `1fcaf57` | Phase 3: home-manager removed from mbp16 flake config, cutover done |
 | `379187e` | kitty restored as `brew-cask:` (was installed by hm, vanished at cutover) |
-| `fba64dd` | Phase 4: 20 casks + 2 mas apps + 14 macOS defaults + TouchID file declared |
+| `2995a7c` | Phase 4: 20 casks + 2 mas apps + 14 macOS defaults + TouchID file declared |
 
 ## Current architecture
 
