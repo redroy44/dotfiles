@@ -4,7 +4,9 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-
+      mise = {
+        disabled = false;
+      };
     };
   };
 }

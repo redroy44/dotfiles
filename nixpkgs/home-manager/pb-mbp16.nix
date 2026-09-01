@@ -8,21 +8,21 @@
     ./modules/starship.nix
     ./modules/kitty.nix
     ./modules/yazi.nix
+    ./modules/tmux
     # ./modules/ghostty.nix
     # ./modules/neovim.nix # doesn't support lua config
   ];
 
   home.stateVersion = "25.11";
 
-  #fonts.fontconfig.enable = true;
+  fonts.fontconfig.enable = true;
 
-  fonts.fontconfig.enable = false;
 
   home.username = "pbandurski";
   home.homeDirectory = "/Users/pbandurski";
 
   # https://github.com/nix-community/nix-direnv#via-home-manager
-  programs.direnv.enable = true;
+  programs.direnv.enable = false;
   programs.direnv.enableZshIntegration = true;
   programs.direnv.nix-direnv.enable = true;
 
@@ -45,8 +45,9 @@
   };
 
   home.packages = with pkgs; [
+    # ponytail: direnv's fish test gets SIGKILLed in the sandbox; drop checks. Remove if upstream fixes the test.
+    (direnv.overrideAttrs (_: { doCheck = false; }))
     gnupg
-    tmux
     wget
     bat
     htop
@@ -76,6 +77,8 @@
     tenv
     terraform-ls
 
+    nh
+
     tflint
     vault
     jq
@@ -104,7 +107,7 @@
     # python314Packages.virtualenv
     poetry
 
-    nodejs_20
+    nodejs_24
     bun
     #nodePackages.npm
     #yarn
@@ -115,7 +118,7 @@
     # cargo
 
     # colima
-    docker
+    docker_29
     docker-compose
     lazydocker
     act
@@ -131,10 +134,13 @@
     # libuuid # `uuidgen` (already pre-installed on mac)
   ] ++ [
     # pkgsUnstable.gleam
-    pkgsUnstable.vectorcode
+    # pkgsUnstable.vectorcode
     pkgsUnstable.neovim 
     pkgsUnstable.awscli2
-    # pkgsUnstable.uv
+    pkgsUnstable.rtk
+    pkgsUnstable.herdr
+    pkgsUnstable.worktrunk
+    pkgsUnstable.opencode
   ];
 
 }

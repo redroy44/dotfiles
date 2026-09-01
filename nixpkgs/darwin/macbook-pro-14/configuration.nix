@@ -28,8 +28,8 @@
 
     extraOptions = ''
       # needed for nix-direnv
-      keep-outputs = true
-      keep-derivations = true
+      keep-outputs = false
+      keep-derivations = false
       # assuming the builder has a faster internet connection
       builders-use-substitutes = true
       experimental-features = nix-command flakes

@@ -7,6 +7,7 @@
     ./modules/git.nix
     ./modules/starship.nix
     ./modules/kitty.nix
+    ./modules/tmux
     # ./modules/neovim.nix # doesn't support lua config
   ];
 
@@ -24,7 +25,6 @@
 
   home.packages = with pkgs; [
     gnupg
-    tmux
     wget
     bat
     htop

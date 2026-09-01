@@ -7,6 +7,7 @@
     ./modules/git.nix
     ./modules/starship.nix
     ./modules/kitty.nix
+    ./modules/tmux
     # ./modules/neovim.nix # doesn't support lua config
   ];
 
@@ -18,13 +19,12 @@
   home.homeDirectory = "/Users/pbandurski";
 
   # https://github.com/nix-community/nix-direnv#via-home-manager
-  programs.direnv.enable = true;
+  programs.direnv.enable = false;
   programs.direnv.enableZshIntegration = true;
   programs.direnv.nix-direnv.enable = true;
 
   home.packages = with pkgs; [
     gnupg
-    tmux
     wget
     bat
     htop

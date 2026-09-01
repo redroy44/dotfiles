@@ -15,12 +15,11 @@
     home = "/Users/pbandurski";
   };
 
-  # Fonts via Homebrew instead to avoid dlinfo dependency
-  # fonts.packages = with pkgs; [
-  #   nerd-fonts.fira-code
-  #   fira-code
-  #   fira-code-symbols
-  # ];
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    fira-code
+    fira-code-symbols
+   ];
 
   nix = {
     enable = true;
@@ -61,7 +60,7 @@ homebrew = {
     onActivation = {
       upgrade = true;
       autoUpdate = true;
-      cleanup = "zap";
+      cleanup = "none";
     };
 
     global = {
@@ -76,7 +75,7 @@ homebrew = {
 
     brews = [
       # "bitwarden-cli"
-      "cueitup"
+      # "cueitup"
     ];
 
     casks = [
@@ -93,6 +92,8 @@ homebrew = {
       "ghostty"
       # "gleam"
 
+      "copilot-cli"
+
       "raycast"
       "postico"
       "visual-studio-code"
@@ -103,10 +104,10 @@ homebrew = {
       "obsidian"
       "itsycal"
       "zoom"
+      "bitwarden"
 
       # Productivity
-      "spark"
-      "bitwarden"
+      "spark-app"
 
       # Media
       "spotify"
