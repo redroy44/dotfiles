@@ -133,7 +133,6 @@ rtk = "latest"
 "brew-cask:itsycal" = "latest"
 "brew-cask:zoom" = "latest"
 "brew-cask:bitwarden" = "latest"
-"brew-cask:spark-app" = "latest"
 "brew-cask:spotify" = "latest"
 
 # Mac App Store. `mas` is a brew package rather than a [tools] entry on purpose:
@@ -142,6 +141,7 @@ rtk = "latest"
 # fails, leaving a green first run with both apps missing.
 "mas:688211836" = "latest"   # EasyRes
 "mas:836505650" = "latest"   # Battery Monitor: Health, Info
+"mas:6445813049" = "latest"  # Spark Desktop (Readdle email client)
 
 # --- phase 4: from nix-darwin system.defaults ---
 # Written raw rather than via the curated [bootstrap.macos.dock]/[.finder] sections:

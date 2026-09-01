@@ -16,7 +16,7 @@ the thing that actually applied the defaults. Phase 5 removes it.
 | `53e7559` | Phase 2: 57 `[tools]` + 10 brew-backend packages, `mise.lock` |
 | `1fcaf57` | Phase 3: home-manager removed from mbp16 flake config, cutover done |
 | `379187e` | kitty restored as `brew-cask:` (was installed by hm, vanished at cutover) |
-| `2995a7c` | Phase 4: 20 casks + 2 mas apps + 14 macOS defaults + TouchID file declared |
+| `2995a7c` | Phase 4: 19 casks + 3 mas apps + 14 macOS defaults + TouchID file declared |
 
 ## Current architecture
 
@@ -50,7 +50,7 @@ entry converged as already-satisfied. The nix files were left untouched on purpo
 
 Verified by `status`, not by `apply`:
 
-- `mise bootstrap packages status` → 33/33 `installed`, 0 missing.
+- `mise bootstrap packages status` → 34/34 `installed`, 0 missing.
 - `mise bootstrap macos defaults status` → 14/14 `set` (value *and* plist type match).
 - `mise bootstrap --dry-run` (the whole composed flow) → every phase already-satisfied,
   only the expected `sudo_local` warning. Note the `post-defaults` `killall` hook fires
@@ -58,7 +58,7 @@ Verified by `status`, not by `apply`:
 
 ### Casks: real Homebrew stays the engine
 
-All 20 casks have a Homebrew `.metadata` receipt and exactly one Caskroom version,
+All 19 declared casks (20 before the spark-app swap) have a Homebrew `.metadata` receipt and exactly one Caskroom version,
 which mise documents as satisfying a `brew-cask:` entry **without taking ownership**.
 So declaring them is inert: no re-download, no bundle swap, no Privacy & Security
 (TCC) grants reset. `adopt = true` was deliberately *not* used — that is for
@@ -133,24 +133,49 @@ after, or TouchID sudo stops working until it does.
 
 ### Known gaps — deliberately not declared
 
-Four things exist on this machine that `mise.toml` does not manage. None are bugs;
-they are all "a fresh machine would not get this", recorded so that is a decision
-rather than a surprise.
+- **`hurl`** — a Homebrew leaf declared in neither nix nor mise, installed by hand.
+  Reviewed and deliberately ignored; it is in the mise registry (`hurl = "latest"`)
+  if that ever changes.
+- **`fira-code-symbols`** — reviewed, decided against re-installing. Still present at
+  `/Library/Fonts/Nix Fonts/…-fira-code-symbols-20160811` (one file,
+  `FiraCode-Regular-Symbol.otf`, **built 2016-08-11**) and it disappears with `/nix` at
+  Phase 5. There is **no** Homebrew cask — `font-fira-code-symbols` does not exist — and
+  its nix homepage is a GitHub issue comment (tonsky/FiraCode#211), so there is no
+  reliable download either. It is the old hack that puts FiraCode ligature glyphs in the
+  Unicode Private Use Area for use inside a *different* font; nothing here needs that.
+  `dotfiles/kitty.conf` asks for `FiraCode Nerd Font Mono`, which the Nerd Font cask
+  supplies with a much larger PUA set.
 
-- **`fira-code-symbols`** — came from nix `fonts.packages` and has no cask equivalent.
-  The two font casks cover FiraCode itself and the Nerd Font patch, *not* the symbols
-  package. If glyphs go missing in a terminal or editor after Phase 5, this is why.
-- **`hurl`** — a Homebrew leaf declared in neither nix nor mise. Installed by hand at
-  some point. One line (`hurl = "latest"`, it is in the mise registry) if you want it
-  to survive.
-- **`spark-app`** — installed twice over: the cask *and* Spark Desktop from the Mac App
-  Store (`mas:6445813049`). Only the cask is declared. Worth picking one.
+  If it is ever wanted back, do **not** try to re-download it — copy it out of the store
+  before teardown and let `[dotfiles]` place it:
+
+  ```sh
+  cp "/Library/Fonts/Nix Fonts/06hcyqridwfbnr16s47sn7na59zryvkj-fira-code-symbols-20160811/share/fonts/opentype/FiraCode-Regular-Symbol.otf" dotfiles/
+  ```
+
 - **`cueitup`** — from `dhth/tap`, installed by real Homebrew, and commented out in
-  `configuration.nix` so nix never managed it either. Was briefly declared in Phase 4
-  along with the tap; both were removed on request. Still installed — dropping the
-  declaration does not uninstall anything — but real brew owns it and a fresh machine
-  will not get it. Re-add needs both the `brew:cueitup` entry and a
-  `[bootstrap.brew.taps]` line for `dhth/tap` (`https://github.com/dhth/homebrew-tap`).
+  `configuration.nix` so nix never managed it either. Briefly declared in Phase 4 along
+  with the tap; both removed on request. Still installed — dropping a declaration does
+  not uninstall — but real brew owns it and a fresh machine will not get it. Re-adding
+  needs the `brew:cueitup` entry *and* a `[bootstrap.brew.taps]` line for `dhth/tap`
+  (`https://github.com/dhth/homebrew-tap`).
+
+### The spark-app trap — resolved
+
+`configuration.nix` listed cask `spark-app` under `# Productivity`, evidently meaning
+Readdle's Spark email client. It is not: `spark-app` is **Shadow Lab's keyboard shortcut
+manager** (shadowlab.org). The nix config had been installing the wrong app for as long
+as it existed, and the real email client was separately installed from the App Store:
+
+| | version | last opened |
+|---|---|---|
+| `/Applications/Spark.app` (cask `spark-app`) | 3.3.2 | never (`null`) |
+| `/Applications/Spark Desktop.app` (`mas:6445813049`) | 3.30.7 | in daily use |
+
+Phase 4 therefore declares `mas:6445813049` and **not** `brew-cask:spark-app`.
+
+`/Applications/Spark.app` is still installed and now undeclared — nothing was
+uninstalled. Remove it by hand whenever convenient: `brew uninstall --cask spark-app`.
 
 ## Phase 5 — TODO: nix teardown (only after 1–2 weeks of soak)
 
