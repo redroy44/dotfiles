@@ -79,22 +79,10 @@
           }];
           inputs = { inherit darwin nixpkgs; };
         };
+        # mise migration: home-manager removed — tools & dotfiles now come from mise.toml
         macbook-pro-16 = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
-          modules = [ ./nixpkgs/darwin/macbook-pro-16/configuration.nix 
-          home-manager.darwinModules.home-manager {
-            home-manager.useGlobalPkgs = false;
-            home-manager.useUserPackages = true;
-            home-manager.users.pbandurski = { 
-              imports = [ ./nixpkgs/home-manager/pb-mbp16.nix ]; 
-            };
-            home-manager.extraSpecialArgs = { 
-              pkgsUnstable = inputs.nixpkgsUnstable.legacyPackages.aarch64-darwin; 
-              terraform = nixpkgs-terraform.packages.aarch64-darwin."1.5.7";
-              ghostty = nixpkgs-ghostty.packages.aarch64-darwin.default;
-              mcphub-nvim = mcphub-nvim.packages.aarch64-darwin.default;
-            };
-          }];
+          modules = [ ./nixpkgs/darwin/macbook-pro-16/configuration.nix ];
           inputs = { inherit darwin nixpkgs; };
         };
       };
