@@ -15,11 +15,9 @@
     home = "/Users/pbandurski";
   };
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.fira-code
-    fira-code
-    fira-code-symbols
-   ];
+  # fonts moved to brew-cask:font-fira-code{,-nerd-font} in mise.toml (phase 4).
+  # NOTE: this also drops fira-code-symbols, which has no cask and is not replaced
+  # anywhere — see "Known gaps" in HANDOFF.md. Deliberate.
 
   nix = {
     enable = true;
@@ -55,68 +53,8 @@
   system.stateVersion = 4;
 
 
-homebrew = {
-    enable = true;
-    onActivation = {
-      upgrade = true;
-      autoUpdate = true;
-      cleanup = "none";
-    };
-
-    global = {
-      autoUpdate = true;
-      brewfile = true;
-      # lockfiles = true;
-    };
-
-    taps = [
-      "dhth/tap"
-    ];
-
-    brews = [
-      # "bitwarden-cli"
-      # "cueitup"
-    ];
-
-    casks = [
-      # Fonts
-      "font-fira-code"
-      "font-fira-code-nerd-font"
-
-      # Dev
-      # "docker"
-      "iterm2"
-      "postman"
-      "rectangle"
-
-      "ghostty"
-      # "gleam"
-
-      "copilot-cli"
-
-      "raycast"
-      "postico"
-      "visual-studio-code"
-      "intellij-idea-ce"
-      "slack"
-      "brave-browser"
-      "arc"
-      "obsidian"
-      "itsycal"
-      "zoom"
-      "bitwarden"
-
-      # Productivity
-      "spark-app"
-
-      # Media
-      "spotify"
-    ];
-
-    masApps = {
-      "EasyRes" = 688211836;
-      "Battery Monitor: Health, Info" = 836505650;
-    };
-  };
+# taps / brews / casks / masApps moved to [bootstrap.packages] in mise.toml (phase 4).
+# Removing this block does not uninstall anything: onActivation.cleanup was "none",
+# so nix-darwin never owned the artifacts, only the Brewfile it generated.
 
 }

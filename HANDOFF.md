@@ -3,7 +3,7 @@
 Branch: `mise-migration` (master untouched = full rollback path).
 Scope: **mbp16 only**. mbp14 + zp stay on nix for now. Old x86 MBP: ignored permanently.
 
-## Status: Phase 4 of 5 complete ✅
+## Status: Phase 4 of 5 complete ✅ · phase 4b staged, not activated
 
 mbp16 runs on mise: tools from `mise.toml`, dotfiles symlinked from `dotfiles/`,
 home-manager removed from the flake. Casks, Mac App Store apps and macOS defaults
@@ -80,21 +80,27 @@ domain. All 14 pairs are raw instead: one mechanism, a 1:1 transcription you can
 diff against `settings.nix`, and no dependence on curated-section support in a
 given mise version. `[bootstrap.hooks.post-defaults]` runs `killall Dock Finder`.
 
-### TouchID sudo: declared, intentionally not applied
+### TouchID sudo: declared, and it CANNOT move before phase 5
 
-`[bootstrap.files."/etc/pam.d/sudo_local"]` is in the config, but `/etc/pam.d/sudo_local`
-is currently a **symlink into the read-only nix store**, owned by nix-darwin. mise
-detects the type mismatch and refuses to touch it:
+`[bootstrap.files."/etc/pam.d/sudo_local"]` is in `mise.toml`, but the path is a
+symlink into the read-only nix store, so mise refuses to touch it:
 
 ```
 mise WARN  would not change file:/etc/pam.d/sudo_local: current symlink mode 0755
            uid 0 gid 0, desired file mode 0444 (manual action required)
 ```
 
-That is the desired outcome — the declaration is inert until nix-darwin is gone, and
-mise enforces it rather than a comment. TouchID sudo keeps working meanwhile. Apply it
-in Phase 5 right after `darwin-uninstaller`. Not a lockout risk either way: password
-sudo still works if TouchID lapses.
+**Verified, and it corrects an earlier assumption in this doc:** dropping
+`security.pam.services.sudo_local.touchIdAuth` from `settings.nix` does *not* release
+the path. A `darwin-rebuild build` without it still produces
+`/etc/pam.d/sudo_local` as a nix-store symlink — just pointing at an **empty file**.
+So removing the option would break TouchID sudo *and* leave mise still unable to write
+there. Worst of both.
+
+`touchIdAuth = true` therefore stays in `settings.nix` until nix-darwin is gone.
+`darwin-uninstaller` — which drops all nix-darwin `/etc` management — is the real
+prerequisite, not the option. That is phase 5 step 1b. Password sudo is unaffected
+throughout.
 
 ### Why `mas` is a brew package, not a `[tools]` entry
 
@@ -122,14 +128,42 @@ survive until teardown — **re-verify by hand after Phase 5**, they are not dec
 anywhere: app firewall (+ block all incoming), `loginwindow.GuestEnabled = false`,
 `SoftwareUpdate.AutomaticallyInstallMacOSUpdates = true`.
 
-### Phase 4 leftover — your call, not done
+### Phase 4b — prepared, NOT activated
 
-The nix files still contain the now-duplicated `homebrew`, `system.defaults` and
-`security.pam` blocks. Stripping them + `darwin-rebuild switch` is the Phase-3-shaped
-other half and was **not** done unasked. If you want it: removing
-`security.pam.services.sudo_local.touchIdAuth` and rebuilding deletes the
-`/etc/pam.d/sudo_local` symlink, so `mise bootstrap files apply` needs to land right
-after, or TouchID sudo stops working until it does.
+The nix files have been stripped of everything mise now owns, but **no
+`darwin-rebuild switch` has been run**. The system is still running the old
+generation. This is a dress rehearsal: it proves mise alone carries the machine
+*while rollback still works*, instead of finding out during phase 5 with the bridge
+already burned.
+
+What changed in the repo:
+- `configuration.nix` — `fonts.packages` and the whole `homebrew` block removed.
+- `settings.nix` — `NSGlobalDomain` / `dock` / `finder` removed. Kept: `loginwindow`,
+  `SoftwareUpdate`, `applicationFirewall`, `primaryUser`, and `touchIdAuth` (see above).
+
+`darwin-rebuild build` succeeds, and the complete activation diff is small and known:
+
+```
+Brewfile:             ε → ∅      (+ HOMEBREW_BUNDLE_FILE/_NO_LOCK drop out of /etc/zshenv)
+fira-code:            6.2 → ∅            } both still supplied by the casks,
+nerd-fonts-fira-code: 3.4.0+6.2 → ∅      } in ~/Library/Fonts
+fira-code-symbols:    20160811 → ∅   ← the only real loss, deliberate
+mas:                  2.2.2 → ∅     ← nix-darwin's own mas, replaced by brew:mas 7.0.0
+```
+
+`/etc/pam.d/sudo_local` is byte-identical between the two generations, and nix-darwin
+does not revert the defaults it wrote — mise owns them now.
+
+To activate after the soak:
+
+```sh
+darwin-rebuild build --flake ~/repos/dotfiles#macbook-pro-16   # re-check first
+sudo darwin-rebuild switch --flake ~/repos/dotfiles#macbook-pro-16
+mise bootstrap --dry-run     # expect: everything already-satisfied
+```
+
+Then use the machine for a few days before starting phase 5. Rollback is unchanged and
+still valid: `git checkout master` + `darwin-rebuild switch`.
 
 ### Known gaps — deliberately not declared
 
@@ -177,12 +211,14 @@ Phase 4 therefore declares `mas:6445813049` and **not** `brew-cask:spark-app`.
 `/Applications/Spark.app` is still installed and now undeclared — nothing was
 uninstalled. Remove it by hand whenever convenient: `brew uninstall --cask spark-app`.
 
-## Phase 5 — TODO: nix teardown (only after 1–2 weeks of soak)
+## Phase 5 — TODO: nix teardown (after the soak *and* after 4b is activated)
 
 1. `darwin-uninstaller` (nix-darwin) — restores /etc shell files it manages.
 1b. Immediately after: `mise bootstrap files apply` to write the real
-   `/etc/pam.d/sudo_local` (TouchID sudo) now that the nix symlink is gone,
-   then re-verify the four sudo-domain settings listed under Phase 4.
+   `/etc/pam.d/sudo_local` (TouchID sudo). This only becomes possible once
+   darwin-uninstaller has dropped nix-darwin's /etc management — dropping the
+   `touchIdAuth` option alone does not free the path (verified, see phase 4).
+   Then re-verify the four sudo-domain settings listed under Phase 4.
 2. nix itself: stop daemon launchd plists, remove `_nixbld*` users, `/etc/synthetic.conf`
    + fstab entries, restore `/etc/zshrc.backup-before-nix` et al., delete `/nix` APFS volume.
 3. Repo cleanup: delete `flake.nix`, `flake.lock`, `nixpkgs/` **except** keep mbp14/zp parts
