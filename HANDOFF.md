@@ -96,26 +96,24 @@ mise enforces it rather than a comment. TouchID sudo keeps working meanwhile. Ap
 in Phase 5 right after `darwin-uninstaller`. Not a lockout risk either way: password
 sudo still works if TouchID lapses.
 
-### The weird thing about `mas`
+### Why `mas` is a brew package, not a `[tools]` entry
 
-mise's `mas:` package manager shells out to the `mas` CLI, which must already be on
-PATH. But `[bootstrap.packages]` is **step 2** of `mise bootstrap` and `[tools]` — where
-`mas` is declared — is **step 14**. So on a fresh machine `mas` does not exist yet when
-its own packages are resolved.
+`mas:` packages shell out to the `mas` CLI, which must already be on PATH. But
+`[bootstrap.packages]` is **step 2** of `mise bootstrap` and `[tools]` is **step 14** —
+so a `[tools]` mas does not exist yet when its own packages resolve.
 
-The failure mode is the nasty kind: mise does **not** error. A missing `mas` makes those
+The failure mode is the quiet kind: mise does **not** error. A missing `mas` makes those
 entries report as *skipped*, so a first bootstrap looks green while EasyRes and Battery
-Monitor silently aren't there. A second `mise bootstrap` installs them. Hence the
-doubled command in the README.
+Monitor silently are not installed.
 
-It looks fine on this machine only because `mas` is already installed. If that ordering
-ever matters more, the fix is `brew:mas` in `[bootstrap.packages]` instead of `mas` in
-`[tools]` — same phase as its consumers — at the cost of a brew formula over an aqua
-binary. Not worth it for two App Store apps today.
+`"brew:mas"` sits in `[bootstrap.packages]` instead, the same phase as its consumers,
+which mise orders brew → brew-cask → mas. One `mise bootstrap` now does the right thing
+on a fresh machine. The cost is a brew formula instead of an aqua binary — worth it to
+remove a silent-partial-success trap.
 
-`mas` is locked for `macos-arm64` only. `mise lock --global` with no `--platform` sweeps
-in ~180 windows/linux/baseline entries (+1570 lines) for an Apple-Silicon-only config —
-use `mise lock --global --platform macos-arm64 <tool>`.
+(Lockfile note: `mise lock --global` with no `--platform` sweeps in ~180
+windows/linux/baseline entries — +1570 lines — for an Apple-Silicon-only config. Use
+`mise lock --global --platform macos-arm64 <tool>`.)
 
 ### Not migratable (unchanged from before)
 

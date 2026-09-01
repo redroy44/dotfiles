@@ -88,7 +88,6 @@ yazi = "latest"
 yq = "latest"
 
 # misc dev tools (were pkgsUnstable in nix)
-mas = "latest"
 opencode = "latest"
 worktrunk = "latest"
 herdr = "latest"
@@ -106,6 +105,7 @@ rtk = "latest"
 "brew:tree" = "latest"
 "brew:wget" = "latest"
 "brew:docker" = "latest"
+"brew:mas" = "latest"   # must precede the mas: entries below
 # kitty was installed by home-manager; restore as cask post-cutover
 "brew-cask:kitty" = "latest"
 
@@ -136,8 +136,10 @@ rtk = "latest"
 "brew-cask:spark-app" = "latest"
 "brew-cask:spotify" = "latest"
 
-# Mac App Store. Needs the `mas` tool, which installs in the [tools] phase — after
-# packages — so a fresh machine needs `mise bootstrap` twice (or `mise install mas` first).
+# Mac App Store. `mas` is a brew package rather than a [tools] entry on purpose:
+# [bootstrap.packages] is step 2 of `mise bootstrap` and [tools] is step 14, so a
+# [tools] mas would not exist yet when these resolve — and mise *skips* rather than
+# fails, leaving a green first run with both apps missing.
 "mas:688211836" = "latest"   # EasyRes
 "mas:836505650" = "latest"   # Battery Monitor: Health, Info
 

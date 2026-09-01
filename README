@@ -5,7 +5,6 @@ darwin-rebuild switch --flake .#macbook-pro-16
 #   curl https://mise.run | sh
 #   mkdir -p ~/.config/mise && ln -sf ~/repos/dotfiles/mise.toml ~/.config/mise/config.toml
 #   mise bootstrap --yes           # everything below, in order
-#   mise bootstrap --yes           # again: mas: packages need the mas tool from [tools]
 # or piecemeal:
 #   mise bootstrap repos apply     # clones oh-my-zsh + plugins
 #   mise bootstrap dotfiles apply  # links dotfiles/ into $HOME
