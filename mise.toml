@@ -88,6 +88,7 @@ yazi = "latest"
 yq = "latest"
 
 # misc dev tools (were pkgsUnstable in nix)
+mas = "latest"
 opencode = "latest"
 worktrunk = "latest"
 herdr = "latest"
@@ -107,3 +108,80 @@ rtk = "latest"
 "brew:docker" = "latest"
 # kitty was installed by home-manager; restore as cask post-cutover
 "brew-cask:kitty" = "latest"
+
+# --- phase 4: from nix-darwin homebrew.* ---
+# All of these are already installed by real Homebrew with a .metadata receipt and
+# exactly one Caskroom version, so mise counts them installed and leaves them alone.
+# Real brew stays the cask engine: use `brew upgrade --cask` to update them.
+# (No `adopt` — that's for unmanaged bundles with no .metadata; here it would only
+# force a needless re-download and risk resetting Privacy & Security grants.)
+"brew-cask:font-fira-code" = "latest"
+"brew-cask:font-fira-code-nerd-font" = "latest"
+"brew-cask:iterm2" = "latest"
+"brew-cask:ghostty" = "latest"
+"brew-cask:postman" = "latest"
+"brew-cask:postico" = "latest"
+"brew-cask:rectangle" = "latest"
+"brew-cask:raycast" = "latest"
+"brew-cask:copilot-cli" = "latest"
+"brew-cask:visual-studio-code" = "latest"
+"brew-cask:intellij-idea-ce" = "latest"
+"brew-cask:slack" = "latest"
+"brew-cask:brave-browser" = "latest"
+"brew-cask:arc" = "latest"
+"brew-cask:obsidian" = "latest"
+"brew-cask:itsycal" = "latest"
+"brew-cask:zoom" = "latest"
+"brew-cask:bitwarden" = "latest"
+"brew-cask:spark-app" = "latest"
+"brew-cask:spotify" = "latest"
+
+# the only thing the dhth tap is for
+"brew:cueitup" = "latest"
+
+# Mac App Store. Needs the `mas` tool, which installs in the [tools] phase — after
+# packages — so a fresh machine needs `mise bootstrap` twice (or `mise install mas` first).
+"mas:688211836" = "latest"   # EasyRes
+"mas:836505650" = "latest"   # Battery Monitor: Health, Info
+
+[bootstrap.brew.taps]
+"dhth/tap" = "https://github.com/dhth/homebrew-tap"
+
+# --- phase 4: from nix-darwin system.defaults ---
+# Written raw rather than via the curated [bootstrap.macos.dock]/[.finder] sections:
+# one mechanism instead of two, a 1:1 transcription of settings.nix, and no
+# dependency on curated-section support in a given mise version.
+[bootstrap.macos.defaults.NSGlobalDomain]
+AppleInterfaceStyle = "Dark"
+AppleShowAllExtensions = true
+AppleFontSmoothing = 0
+
+[bootstrap.macos.defaults."com.apple.dock"]
+orientation = "left"
+tilesize = 48
+autohide = false
+mru-spaces = false
+show-recents = false
+minimize-to-application = true
+
+[bootstrap.macos.defaults."com.apple.finder"]
+AppleShowAllExtensions = true
+FXDefaultSearchScope = "SCcf"
+FXPreferredViewStyle = "Nlsv"
+ShowPathbar = true
+QuitMenuItem = true
+
+[bootstrap.hooks.post-defaults]
+run = "killall Dock Finder || true"
+
+# --- phase 4: from security.pam.services.sudo_local.touchIdAuth ---
+# Declared, but do NOT apply while nix-darwin owns this path: it is currently a
+# symlink into the read-only nix store. Apply in phase 5, after darwin-uninstaller.
+[bootstrap.files."/etc/pam.d/sudo_local"]
+content = "auth       sufficient     pam_tid.so\n"
+mode = "0444"
+
+# Not migratable — sudo-domain defaults, mise writes user defaults only.
+# Already set by nix-darwin; re-verify by hand after phase 5 teardown:
+#   application firewall (+ block all incoming), loginwindow.GuestEnabled = false,
+#   SoftwareUpdate.AutomaticallyInstallMacOSUpdates = true

@@ -1996,6 +1996,16 @@ checksum = "sha256:a65b9f457153934a7ce1f7e0fe1c4922a95bb2822222126e4fbaa6ee9c0d7
 url = "https://github.com/lsd-rs/lsd/releases/download/v1.2.0/lsd-v1.2.0-x86_64-pc-windows-msvc.zip"
 url_api = "https://api.github.com/repos/lsd-rs/lsd/releases/assets/303320206"
 
+[[tools.mas]]
+version = "7.0.0"
+backend = "aqua:mas-cli/mas"
+specifiers = ["latest"]
+
+[tools.mas."platforms.macos-arm64"]
+checksum = "sha256:bc218a854c85d9e1c95496a96b26287bb66056b95688b90f91d04fa62ed21b75"
+url = "https://github.com/mas-cli/mas/releases/download/v7.0.0/mas-7.0.0-arm64.pkg"
+url_api = "https://api.github.com/repos/mas-cli/mas/releases/assets/411752346"
+
 [[tools.neovim]]
 version = "0.12.5"
 backend = "vfox:mise-plugins/vfox-neovim"

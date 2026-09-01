@@ -4,7 +4,15 @@ darwin-rebuild switch --flake .#macbook-pro-16
 # one-time bootstrap on a new machine:
 #   curl https://mise.run | sh
 #   mkdir -p ~/.config/mise && ln -sf ~/repos/dotfiles/mise.toml ~/.config/mise/config.toml
+#   mise bootstrap --yes           # everything below, in order
+#   mise bootstrap --yes           # again: mas: packages need the mas tool from [tools]
+# or piecemeal:
 #   mise bootstrap repos apply     # clones oh-my-zsh + plugins
-#   mise bootstrap dotfiles        # links dotfiles/ into $HOME
+#   mise bootstrap dotfiles apply  # links dotfiles/ into $HOME
+#   mise bootstrap packages apply  # brew formulae, casks, Mac App Store apps
+#   mise bootstrap macos defaults apply
 # phase 3 cutover (this machine): remove home-manager from flake, rebuild,
-# then run the two bootstrap commands above.
+# then run the bootstrap commands above.
+# phase 4: casks/mas/macOS defaults declared in mise.toml. Casks stay owned by
+# real Homebrew (mise sees their .metadata receipts and leaves them alone), so
+# upgrade them with `brew upgrade --cask`, not mise.
