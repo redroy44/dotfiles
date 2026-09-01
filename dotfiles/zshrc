@@ -40,8 +40,8 @@ if test -n "$KITTY_INSTALLATION_DIR"; then
   unfunction kitty-integration
 fi
 
-# autojump (installed via brew)
-[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+# autojump (installed via mise's brew backend)
+[ -f /opt/homebrew/opt/autojump/etc/profile.d/autojump.sh ] && . /opt/homebrew/opt/autojump/etc/profile.d/autojump.sh
 
 if [[ $options[zle] = on ]]; then
   command -v atuin >/dev/null && eval "$(atuin init zsh)"

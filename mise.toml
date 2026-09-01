@@ -24,4 +24,84 @@ url = "https://github.com/zsh-users/zsh-autosuggestions.git"
 [bootstrap.repos."~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
 url = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 
-# [tools] comes in phase 2
+[settings]
+lockfile = true
+
+[tools]
+# languages / runtimes (pins match previous nix versions)
+java = "temurin-21"
+python = "3.14"
+node = "24"
+bun = "latest"
+rust = "stable"
+uv = "latest"
+
+# scala
+sbt = "latest"
+scala = "latest"
+scalafmt = "latest"
+scala-cli = "latest"
+coursier = "latest"
+
+# python tooling
+poetry = "latest"
+"pipx:httpie" = "latest"
+"pipx:awsume" = "latest"
+"pipx:aws-sso-util" = "latest"
+
+# infra / cloud (tenv dropped — mise does per-project terraform versions itself)
+terraform = "latest"
+terraform-ls = "latest"
+tflint = "latest"
+kubectl = "latest"
+helm = "latest"
+k9s = "latest"
+vault = "latest"
+awscli = "latest"
+gcloud = "latest"
+heroku = "latest"
+docker-compose = "latest"
+lazydocker = "latest"
+act = "latest"
+
+# cli utils
+bat = "latest"
+bottom = "latest"
+delta = "latest"
+difftastic = "latest"
+direnv = "latest"
+fd = "latest"
+fzf = "latest"
+gdu = "latest"
+gh = "latest"
+jq = "latest"
+just = "latest"
+lazygit = "latest"
+lsd = "latest"
+neovim = "latest"
+pre-commit = "latest"
+ripgrep = "latest"
+starship = "latest"
+atuin = "latest"
+tmux = "latest"
+yazi = "latest"
+yq = "latest"
+
+# misc dev tools (were pkgsUnstable in nix)
+opencode = "latest"
+worktrunk = "latest"
+herdr = "latest"
+rtk = "latest"
+
+# not in registry — installed via mise's brew backend, no Homebrew needed
+[bootstrap.packages]
+"brew:autojump" = "latest"
+"brew:gnupg" = "latest"
+"brew:graphviz" = "latest"
+"brew:htop" = "latest"
+"brew:kcat" = "latest"
+"brew:fastfetch" = "latest"  # neofetch is archived & gone from brew; fastfetch is the successor
+"brew:the_silver_searcher" = "latest"
+"brew:tree" = "latest"
+"brew:wget" = "latest"
+"brew:docker" = "latest"
