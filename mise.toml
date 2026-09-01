@@ -136,16 +136,10 @@ rtk = "latest"
 "brew-cask:spark-app" = "latest"
 "brew-cask:spotify" = "latest"
 
-# the only thing the dhth tap is for
-"brew:cueitup" = "latest"
-
 # Mac App Store. Needs the `mas` tool, which installs in the [tools] phase — after
 # packages — so a fresh machine needs `mise bootstrap` twice (or `mise install mas` first).
 "mas:688211836" = "latest"   # EasyRes
 "mas:836505650" = "latest"   # Battery Monitor: Health, Info
-
-[bootstrap.brew.taps]
-"dhth/tap" = "https://github.com/dhth/homebrew-tap"
 
 # --- phase 4: from nix-darwin system.defaults ---
 # Written raw rather than via the curated [bootstrap.macos.dock]/[.finder] sections:

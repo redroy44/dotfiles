@@ -50,7 +50,7 @@ entry converged as already-satisfied. The nix files were left untouched on purpo
 
 Verified by `status`, not by `apply`:
 
-- `mise bootstrap packages status` → 34/34 `installed`, 0 missing.
+- `mise bootstrap packages status` → 33/33 `installed`, 0 missing.
 - `mise bootstrap macos defaults status` → 14/14 `set` (value *and* plist type match).
 - `mise bootstrap --dry-run` (the whole composed flow) → every phase already-satisfied,
   only the expected `sudo_local` warning. Note the `post-defaults` `killall` hook fires
@@ -96,15 +96,26 @@ mise enforces it rather than a comment. TouchID sudo keeps working meanwhile. Ap
 in Phase 5 right after `darwin-uninstaller`. Not a lockout risk either way: password
 sudo still works if TouchID lapses.
 
-### Also picked up
+### The weird thing about `mas`
 
-- `mas` added to `[tools]` (aqua registry, no brew needed) + locked for macos-arm64
-  only. Ordering caveat: `mas:` packages install in the packages phase, `mas` itself
-  in the later tools phase, so a **fresh machine needs `mise bootstrap` run twice**.
-- `brew:cueitup` + `[bootstrap.brew.taps]` `dhth/tap`. The tap was listed as
-  in-scope but nothing used it; `cueitup` is installed from it and was commented out
-  in `configuration.nix`, so declaring both is what makes the tap mean anything.
-  Drop both lines together if you don't want it.
+mise's `mas:` package manager shells out to the `mas` CLI, which must already be on
+PATH. But `[bootstrap.packages]` is **step 2** of `mise bootstrap` and `[tools]` — where
+`mas` is declared — is **step 14**. So on a fresh machine `mas` does not exist yet when
+its own packages are resolved.
+
+The failure mode is the nasty kind: mise does **not** error. A missing `mas` makes those
+entries report as *skipped*, so a first bootstrap looks green while EasyRes and Battery
+Monitor silently aren't there. A second `mise bootstrap` installs them. Hence the
+doubled command in the README.
+
+It looks fine on this machine only because `mas` is already installed. If that ordering
+ever matters more, the fix is `brew:mas` in `[bootstrap.packages]` instead of `mas` in
+`[tools]` — same phase as its consumers — at the cost of a brew formula over an aqua
+binary. Not worth it for two App Store apps today.
+
+`mas` is locked for `macos-arm64` only. `mise lock --global` with no `--platform` sweeps
+in ~180 windows/linux/baseline entries (+1570 lines) for an Apple-Silicon-only config —
+use `mise lock --global --platform macos-arm64 <tool>`.
 
 ### Not migratable (unchanged from before)
 
@@ -122,13 +133,26 @@ other half and was **not** done unasked. If you want it: removing
 `/etc/pam.d/sudo_local` symlink, so `mise bootstrap files apply` needs to land right
 after, or TouchID sudo stops working until it does.
 
-### Loose ends spotted, not acted on
+### Known gaps — deliberately not declared
 
-- `hurl` is a Homebrew leaf declared in neither nix nor mise — lost on a fresh machine.
-- `fira-code-symbols` came from nix `fonts.packages` and has no cask equivalent;
-  the two font casks cover FiraCode + the Nerd Font patch, not the symbols package.
-- `spark-app` (cask) and Spark Desktop (mas `6445813049`) are both installed. Only
-  the cask is declared. Probably one is redundant.
+Four things exist on this machine that `mise.toml` does not manage. None are bugs;
+they are all "a fresh machine would not get this", recorded so that is a decision
+rather than a surprise.
+
+- **`fira-code-symbols`** — came from nix `fonts.packages` and has no cask equivalent.
+  The two font casks cover FiraCode itself and the Nerd Font patch, *not* the symbols
+  package. If glyphs go missing in a terminal or editor after Phase 5, this is why.
+- **`hurl`** — a Homebrew leaf declared in neither nix nor mise. Installed by hand at
+  some point. One line (`hurl = "latest"`, it is in the mise registry) if you want it
+  to survive.
+- **`spark-app`** — installed twice over: the cask *and* Spark Desktop from the Mac App
+  Store (`mas:6445813049`). Only the cask is declared. Worth picking one.
+- **`cueitup`** — from `dhth/tap`, installed by real Homebrew, and commented out in
+  `configuration.nix` so nix never managed it either. Was briefly declared in Phase 4
+  along with the tap; both were removed on request. Still installed — dropping the
+  declaration does not uninstall anything — but real brew owns it and a fresh machine
+  will not get it. Re-add needs both the `brew:cueitup` entry and a
+  `[bootstrap.brew.taps]` line for `dhth/tap` (`https://github.com/dhth/homebrew-tap`).
 
 ## Phase 5 — TODO: nix teardown (only after 1–2 weeks of soak)
 
