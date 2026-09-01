@@ -1,0 +1,27 @@
+# Global mise config — symlink to ~/.config/mise/config.toml (see README)
+#   ln -sf ~/repos/dotfiles/mise.toml ~/.config/mise/config.toml
+
+# sources are absolute: relative paths resolve against the config file's
+# directory, which is ~/.config/mise when loaded via the global symlink
+[dotfiles]
+"~/.config/mise/config.toml" = "~/repos/dotfiles/mise.toml"
+"~/.zshenv" = "~/repos/dotfiles/dotfiles/zshenv"
+"~/.zshrc" = "~/repos/dotfiles/dotfiles/zshrc"
+"~/.config/git/config" = "~/repos/dotfiles/dotfiles/gitconfig"
+"~/.config/git/ignore" = "~/repos/dotfiles/dotfiles/gitignore"
+"~/.config/kitty/kitty.conf" = "~/repos/dotfiles/dotfiles/kitty.conf"
+"~/.config/kitty/kitty-theme.conf" = "~/repos/dotfiles/dotfiles/kitty-theme.conf"
+"~/.config/starship.toml" = "~/repos/dotfiles/dotfiles/starship.toml"
+"~/.config/tmux/tmux.conf" = "~/repos/dotfiles/dotfiles/tmux.conf"
+
+# oh-my-zsh + plugins, declaratively cloned (replaces nix-store omz)
+[bootstrap.repos."~/.oh-my-zsh"]
+url = "https://github.com/ohmyzsh/ohmyzsh.git"
+
+[bootstrap.repos."~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"]
+url = "https://github.com/zsh-users/zsh-autosuggestions.git"
+
+[bootstrap.repos."~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
+url = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+
+# [tools] comes in phase 2

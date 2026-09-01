@@ -1,1 +1,10 @@
 darwin-rebuild switch --flake .#macbook-pro-16
+
+## mise migration (in progress)
+# one-time bootstrap on a new machine:
+#   curl https://mise.run | sh
+#   mkdir -p ~/.config/mise && ln -sf ~/repos/dotfiles/mise.toml ~/.config/mise/config.toml
+#   mise bootstrap repos apply     # clones oh-my-zsh + plugins
+#   mise bootstrap dotfiles        # links dotfiles/ into $HOME
+# phase 3 cutover (this machine): remove home-manager from flake, rebuild,
+# then run the two bootstrap commands above.

@@ -1,0 +1,15 @@
+**/.metals/
+**/project/metals.sbt
+**/.idea/
+**/.vscode/settings.json
+**/.cursor/
+**/.bloop/
+**/.bsp/
+**/.scala-build/
+**/.direnv/
+**/.DS_Store
+.direnv
+.envrc
+.env
+**/.claude/
+CLAUDE.md

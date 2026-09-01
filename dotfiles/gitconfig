@@ -1,0 +1,39 @@
+[alias]
+	dft = "-c diff.external=difft diff"
+	dl = "-c diff.external=difft log -p --ext-diff"
+	ds = "-c diff.external=difft show --ext-diff"
+
+[core]
+	editor = "nvim"
+	fileMode = false
+	ignorecase = false
+	pager = "delta"
+
+[delta]
+	side-by-side = true
+
+[init]
+	defaultBranch = "main"
+
+[interactive]
+	diffFilter = "delta --color-only"
+
+[merge]
+	conflictstyle = "zdiff3"
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+
+[rerere]
+	enabled = true
+
+[user]
+	email = "redroy44@gmail.com"
+	name = "Piotr Bandurski"
+	signingKey = "07A01229AAA846E1"
+
+[includeIf "gitdir:~/code/"]
+	path = "~/code/.gitconfig"
