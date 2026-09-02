@@ -69,7 +69,6 @@ bat = "latest"
 bottom = "latest"
 delta = "latest"
 difftastic = "latest"
-direnv = "latest"
 fd = "latest"
 fzf = "latest"
 gdu = "latest"
@@ -100,12 +99,12 @@ rtk = "latest"
 "brew:graphviz" = "latest"
 "brew:htop" = "latest"
 "brew:kcat" = "latest"
-"brew:fastfetch" = "latest"  # neofetch is archived & gone from brew; fastfetch is the successor
+"brew:fastfetch" = "latest"           # neofetch is archived & gone from brew; fastfetch is the successor
 "brew:the_silver_searcher" = "latest"
 "brew:tree" = "latest"
 "brew:wget" = "latest"
 "brew:docker" = "latest"
-"brew:mas" = "latest"   # must precede the mas: entries below
+"brew:mas" = "latest"                 # must precede the mas: entries below
 # kitty was installed by home-manager; restore as cask post-cutover
 "brew-cask:kitty" = "latest"
 
@@ -139,9 +138,9 @@ rtk = "latest"
 # [bootstrap.packages] is step 2 of `mise bootstrap` and [tools] is step 14, so a
 # [tools] mas would not exist yet when these resolve — and mise *skips* rather than
 # fails, leaving a green first run with both apps missing.
-"mas:688211836" = "latest"   # EasyRes
-"mas:836505650" = "latest"   # Battery Monitor: Health, Info
-"mas:6445813049" = "latest"  # Spark Desktop (Readdle email client)
+"mas:688211836" = "latest"  # EasyRes
+"mas:836505650" = "latest"  # Battery Monitor: Health, Info
+"mas:6445813049" = "latest" # Spark Desktop (Readdle email client)
 
 # --- phase 4: from nix-darwin system.defaults ---
 # Written raw rather than via the curated [bootstrap.macos.dock]/[.finder] sections:
