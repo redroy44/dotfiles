@@ -86,11 +86,13 @@ tmux = "latest"
 yazi = "latest"
 yq = "latest"
 
-# misc dev tools (were pkgsUnstable in nix)
 opencode = "latest"
 worktrunk = "latest"
 herdr = "latest"
 rtk = "latest"
+
+"cargo:kache" = "latest"
+"cargo:kondo" = "latest"
 
 # not in registry — installed via mise's brew backend, no Homebrew needed
 [bootstrap.packages]

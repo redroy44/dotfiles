@@ -54,3 +54,5 @@ alias la='ls -a'
 alias lla='ls -la'
 alias lt='ls --tree --depth 5'
 alias vim=nvim
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
