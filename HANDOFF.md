@@ -3,7 +3,7 @@
 Branch: `mise-migration` (master untouched = full rollback path).
 Scope: **mbp16 only**. mbp14 + zp stay on nix for now. Old x86 MBP: ignored permanently.
 
-## Status: Phase 4 of 5 complete ✅ · phase 4b staged, not activated
+## Status: Phase 4 of 5 complete ✅ · phase 4b activated 2026-09-08 (gen 101)
 
 mbp16 runs on mise: tools from `mise.toml`, dotfiles symlinked from `dotfiles/`,
 home-manager removed from the flake. Casks, Mac App Store apps and macOS defaults
@@ -16,7 +16,9 @@ the thing that actually applied the defaults. Phase 5 removes it.
 | `53e7559` | Phase 2: 57 `[tools]` + 10 brew-backend packages, `mise.lock` |
 | `1fcaf57` | Phase 3: home-manager removed from mbp16 flake config, cutover done |
 | `379187e` | kitty restored as `brew-cask:` (was installed by hm, vanished at cutover) |
-| `2995a7c` | Phase 4: 19 casks + 3 mas apps + 14 macOS defaults + TouchID file declared |
+| `2995a7c` | Phase 4: 20 casks + 3 mas apps + 14 macOS defaults + TouchID file declared |
+| `6778384` | Phase 4b staged: nix files stripped of everything mise owns |
+| `da1729a` | kache + kondo, worktrunk shell init |
 
 ## Current architecture
 
@@ -36,10 +38,12 @@ the thing that actually applied the defaults. Phase 5 removes it.
 - `neofetch` → `fastfetch` (neofetch dead upstream). `tenv` dropped (mise does
   per-project terraform). terraform is now `latest` (1.16); pin per-project as needed.
 - `sbt -java-home ~/.nix-profile` alias removed — mise sets `JAVA_HOME` (temurin-21).
-- mcphub-nvim came from a flake input; if nvim misses it, wire it into the packer
-  config in `nvim/.config/nvim` instead.
-- Watch out for: gpg signing (new gnupg 2.5.21 from brew backend), atuin history db,
-  anything that cached nix store paths.
+- mcphub-nvim came from a flake input; now present via lazy.nvim at
+  `~/.local/share/nvim/lazy/mcphub.nvim`. Verified after the soak, nothing to do.
+- Soak-verified: atuin history db intact, gnupg 2.5.21 works. `~/.gnupg` holds **no
+  keys** and `user.signingkey = 07A01229AAA846E1` in `dotfiles/gitconfig` is stale —
+  nothing has been signed since 2022 and `commit.gpgsign` is unset, so this predates
+  the migration. Import from backup or drop the config line.
 
 ## Phase 4 — done: system layer declared in mise.toml
 
@@ -58,7 +62,7 @@ Verified by `status`, not by `apply`:
 
 ### Casks: real Homebrew stays the engine
 
-All 19 declared casks (20 before the spark-app swap) have a Homebrew `.metadata` receipt and exactly one Caskroom version,
+All 20 declared casks (21 before the spark-app swap) have a Homebrew `.metadata` receipt and exactly one Caskroom version,
 which mise documents as satisfying a `brew-cask:` entry **without taking ownership**.
 So declaring them is inert: no re-download, no bundle swap, no Privacy & Security
 (TCC) grants reset. `adopt = true` was deliberately *not* used — that is for
@@ -128,11 +132,14 @@ survive until teardown — **re-verify by hand after Phase 5**, they are not dec
 anywhere: app firewall (+ block all incoming), `loginwindow.GuestEnabled = false`,
 `SoftwareUpdate.AutomaticallyInstallMacOSUpdates = true`.
 
-### Phase 4b — prepared, NOT activated
+### Phase 4b — ACTIVATED 2026-09-08
 
-The nix files have been stripped of everything mise now owns, but **no
-`darwin-rebuild switch` has been run**. The system is still running the old
-generation. This is a dress rehearsal: it proves mise alone carries the machine
+The nix files were stripped of everything mise now owns and switched in as
+generation 101 after a 7-day soak. The rebuilt closure was byte-identical to the
+Sep 1 dress-rehearsal build, and the activation diff matched the table below
+exactly. Post-switch: `sudo_local` unchanged (`pam_tid.so` intact), FiraCode faces
+still served from `~/Library/Fonts` by the casks, `mas` now brew 7.0.0,
+`mise bootstrap --dry-run` fully converged. This was a dress rehearsal: it proves mise alone carries the machine
 *while rollback still works*, instead of finding out during phase 5 with the bridge
 already burned.
 
@@ -154,15 +161,15 @@ mas:                  2.2.2 → ∅     ← nix-darwin's own mas, replaced by br
 `/etc/pam.d/sudo_local` is byte-identical between the two generations, and nix-darwin
 does not revert the defaults it wrote — mise owns them now.
 
-To activate after the soak:
+Activated with:
 
 ```sh
-darwin-rebuild build --flake ~/repos/dotfiles#macbook-pro-16   # re-check first
+darwin-rebuild build --flake ~/repos/dotfiles#macbook-pro-16
 sudo darwin-rebuild switch --flake ~/repos/dotfiles#macbook-pro-16
-mise bootstrap --dry-run     # expect: everything already-satisfied
+mise bootstrap --dry-run     # → everything already-satisfied ✅
 ```
 
-Then use the machine for a few days before starting phase 5. Rollback is unchanged and
+Now use the machine for a few days before starting phase 5. Rollback is unchanged and
 still valid: `git checkout master` + `darwin-rebuild switch`.
 
 ### Known gaps — deliberately not declared
