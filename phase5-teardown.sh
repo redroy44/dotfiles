@@ -134,10 +134,9 @@ fi
 say "done — reboot, then verify"
 cat <<'EOF'
     After the reboot, as your normal user:
-      mise bootstrap files status     # sudo_local should read "applied"
+      ./bootstrap-sudo.sh --check     # all four root-owned settings at once
       sudo -k && sudo true            # TouchID prompt, not a password prompt
-      /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate   # want 2
-      defaults read /Library/Preferences/com.apple.loginwindow GuestEnabled  # want 0
-      defaults read /Library/Preferences/com.apple.SoftwareUpdate \
-        AutomaticallyInstallMacOSUpdates                                # want 1
+
+    If --check reports anything WRONG, re-apply with:
+      sudo ./bootstrap-sudo.sh
 EOF

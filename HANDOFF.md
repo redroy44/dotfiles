@@ -239,17 +239,22 @@ be checked after the volume is gone.
   `/usr/share/terminfo`, and `TERMINFO` points into Ghostty's own bundle. No loss.
 - **Store references outside nix**: one hit, `~/.config/kitty/kitty.conf.bak`. Dead
   file, ignore.
-- **Sudo-domain settings, recorded now so they can be compared after teardown:**
+- **Sudo-domain settings** are now scripted, not hand-checked: `./bootstrap-sudo.sh
+  --check` reports all four, and `sudo ./bootstrap-sudo.sh` applies them. Values on
+  2026-09-21, all correct except TouchID which nix-darwin still owns:
 
-  | setting | value on 2026-09-21 |
-  |---|---|
-  | `socketfilterfw --getglobalstate` | 2 (= on **and** block all incoming) |
-  | `com.apple.loginwindow GuestEnabled` | 0 |
-  | `com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates` | 1 |
+  | setting | source of truth | value |
+  |---|---|---|
+  | firewall enabled | `socketfilterfw --getglobalstate` | on |
+  | block all incoming | `socketfilterfw --getblockall` | on |
+  | `com.apple.loginwindow GuestEnabled` | `defaults` | 0 |
+  | `com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates` | `defaults` | 1 |
 
-  Note: firewall on and block-all-incoming are one key, not two —
-  `com.apple.alf globalstate = 2` covers both. The earlier "four settings" count in
-  this doc was really three.
+  **Do not read the firewall with `defaults read com.apple.alf globalstate`.** That
+  plist is a 60-byte legacy stub and still reports `1` on this machine, whose
+  firewall is on *and* blocking all incoming. `socketfilterfw` is authoritative.
+  Enable and block-all are two separate setters; `--getglobalstate` only *prints*
+  "State = 2" because it folds block-all into its own report.
 
 ### Steps
 

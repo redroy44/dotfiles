@@ -17,10 +17,17 @@ git clone git@github.com:redroy44/dotfiles.git ~/repos/dotfiles
 mkdir -p ~/.config/mise
 ln -sf ~/repos/dotfiles/mise.toml ~/.config/mise/config.toml
 mise bootstrap --yes
+sudo ./bootstrap-sudo.sh
 ```
 
 `mise bootstrap` runs every phase in order. Check first with `--dry-run`; it
 prints what each phase would do and changes nothing.
+
+`bootstrap-sudo.sh` covers what mise cannot: mise writes *user* defaults only,
+so the root-owned settings live in that script — application firewall, block all
+incoming, guest account off, auto-install macOS updates, and TouchID sudo.
+It is idempotent, and `./bootstrap-sudo.sh --check` reports without applying
+anything or needing root.
 
 Casks and Mac App Store apps need real Homebrew, so install it before
 bootstrapping if the machine has none. Everything else mise fetches itself.
@@ -34,9 +41,14 @@ mise bootstrap repos apply       # clones oh-my-zsh + 2 plugins
 mise bootstrap dotfiles apply    # links dotfiles/ into $HOME
 mise bootstrap packages apply    # brew formulae, casks, Mac App Store apps
 mise bootstrap macos defaults apply
-mise bootstrap files apply       # /etc/pam.d/sudo_local (TouchID sudo) — needs root
 mise install                     # the [tools] entries
+sudo ./bootstrap-sudo.sh         # root-owned OS settings
 ```
+
+Note `mise bootstrap files apply` is *not* in that list. It declares
+`/etc/pam.d/sudo_local`, but under `sudo` mise sees `$HOME=/var/root`, loads no
+config and writes nothing while reporting success. `bootstrap-sudo.sh` writes
+that file directly.
 
 Order matters in one place: `brew:mas` lives in `[bootstrap.packages]`, not
 `[tools]`, because the `mas:` entries shell out to it and `[tools]` resolves
@@ -92,6 +104,7 @@ nvim/            neovim config (lazy.nvim)
 flake.nix        nix, for mbp14 + zp only
 nixpkgs/         nix machine + home-manager configs
 HANDOFF.md       migration log, phase 5 plan
+bootstrap-sudo.sh    root-owned OS settings mise cannot write
 phase5-teardown.sh   removes nix from mbp16; run after darwin-uninstaller
 ```
 
