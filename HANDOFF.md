@@ -220,6 +220,39 @@ uninstalled. Remove it by hand whenever convenient: `brew uninstall --cask spark
 
 ## Phase 5 — TODO: nix teardown (after the soak *and* after 4b is activated)
 
+### Pre-flight — done 2026-09-21, all clear
+
+13 days on generation 101. `mise bootstrap --dry-run` still converges fully.
+Everything below was checked **while `/nix` still exists**, because none of it can
+be checked after the volume is gone.
+
+- **Shell survives the teardown.** `/etc/zshenv` is a nix-darwin file that sources
+  `set-environment` from the store; it supplies `/usr/bin:/bin:/usr/sbin:/sbin`,
+  which sit *after* the mise paths in the live `PATH`. macOS ships no `/etc/zshenv`,
+  so darwin-uninstaller removes it rather than restoring one — the base PATH then
+  comes back from `/etc/zprofile.before-nix-darwin`, which is present and does call
+  `/usr/libexec/path_helper`. `dotfiles/zshenv` only ever appends to `$PATH`, so it
+  needs that helper to run. Verified present, not assumed.
+- **`/etc` backups all present**: `zprofile`, `zshrc`, `bashrc` each have a
+  `.before-nix-darwin` copy.
+- **terminfo**: `TERMINFO_DIRS` lists three store paths but ends with
+  `/usr/share/terminfo`, and `TERMINFO` points into Ghostty's own bundle. No loss.
+- **Store references outside nix**: one hit, `~/.config/kitty/kitty.conf.bak`. Dead
+  file, ignore.
+- **Sudo-domain settings, recorded now so they can be compared after teardown:**
+
+  | setting | value on 2026-09-21 |
+  |---|---|
+  | `socketfilterfw --getglobalstate` | 2 (= on **and** block all incoming) |
+  | `com.apple.loginwindow GuestEnabled` | 0 |
+  | `com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates` | 1 |
+
+  Note: firewall on and block-all-incoming are one key, not two —
+  `com.apple.alf globalstate = 2` covers both. The earlier "four settings" count in
+  this doc was really three.
+
+### Steps
+
 1. `darwin-uninstaller` (nix-darwin) — restores /etc shell files it manages.
 1b. Immediately after: `mise bootstrap files apply` to write the real
    `/etc/pam.d/sudo_local` (TouchID sudo). This only becomes possible once
@@ -228,8 +261,12 @@ uninstalled. Remove it by hand whenever convenient: `brew uninstall --cask spark
    Then re-verify the four sudo-domain settings listed under Phase 4.
 2. nix itself: stop daemon launchd plists, remove `_nixbld*` users, `/etc/synthetic.conf`
    + fstab entries, restore `/etc/zshrc.backup-before-nix` et al., delete `/nix` APFS volume.
-3. Repo cleanup: delete `flake.nix`, `flake.lock`, `nixpkgs/` **except** keep mbp14/zp parts
-   if that machine hasn't migrated yet. Drop `nh`, `nix-search-cli` mentions.
+3. Repo cleanup: drop `nh` and `nix-search-cli` mentions. **Do not delete `flake.nix`,
+   `flake.lock` or `nixpkgs/`** — mbp14 and zp are still nix machines and
+   `darwinConfigurations.macbook-pro-14` plus the zp home-manager config live in the
+   same flake. Only the `macbook-pro-16` output and `nixpkgs/darwin/macbook-pro-16/`
+   can go. mbp16 cannot build or test the rest once `/nix` is gone, so make this
+   edit *before* step 2 if you want it verified.
 4. Point of no return — after this, rollback = reinstall nix + rebuild from master history.
 
 ## Rollback (valid until Phase 5)
