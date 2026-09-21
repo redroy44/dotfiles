@@ -266,12 +266,25 @@ be checked after the volume is gone.
    Then re-verify the four sudo-domain settings listed under Phase 4.
 2. nix itself: stop daemon launchd plists, remove `_nixbld*` users, `/etc/synthetic.conf`
    + fstab entries, restore `/etc/zshrc.backup-before-nix` et al., delete `/nix` APFS volume.
-3. Repo cleanup: drop `nh` and `nix-search-cli` mentions. **Do not delete `flake.nix`,
-   `flake.lock` or `nixpkgs/`** — mbp14 and zp are still nix machines and
-   `darwinConfigurations.macbook-pro-14` plus the zp home-manager config live in the
-   same flake. Only the `macbook-pro-16` output and `nixpkgs/darwin/macbook-pro-16/`
-   can go. mbp16 cannot build or test the rest once `/nix` is gone, so make this
-   edit *before* step 2 if you want it verified.
+3. Repo cleanup — **done 2026-09-21, before the teardown, so it could be verified
+   while `/nix` still existed.** The `macbook-pro-16` output and
+   `nixpkgs/darwin/macbook-pro-16/` are gone. `flake.nix`, `flake.lock` and the rest
+   of `nixpkgs/` **stay**: mbp14 and zp are still nix machines and share this flake.
+
+   Verified by comparing flake output names before and after the edit —
+   `darwinConfigurations` went from
+   `[ MacBook-Pro-Piotr macbook-pro-14 macbook-pro-16 ]` to
+   `[ MacBook-Pro-Piotr macbook-pro-14 ]`, and `homeConfigurations` did not change.
+
+   **Pre-existing, not caused by this:** `macbook-pro-14` does not evaluate at all on
+   nix-darwin 25.11. Three options were removed upstream and still sit in its config:
+   `services.nix-daemon.enable`, `system.defaults.alf.globalstate` and
+   `security.pam.enableSudoTouchIdAuth`. It failed the same way before and after the
+   mbp16 removal. Fix it on mbp14, from mbp14 — mbp16 cannot build it after step 2.
+
+   (Side note: nix-darwin deprecating `system.defaults.alf.globalstate` in favour of
+   `networking.applicationFirewall.*` is the same legacy-key trap described in the
+   pre-flight above.)
 4. Point of no return — after this, rollback = reinstall nix + rebuild from master history.
 
 ## Rollback (valid until Phase 5)
@@ -283,6 +296,10 @@ rm ~/.zshenv ~/.zshrc ~/.config/git/config ~/.config/git/ignore \
 git checkout master
 sudo darwin-rebuild switch --flake ~/repos/dotfiles#macbook-pro-16
 ```
+
+The `macbook-pro-16` output no longer exists on `mise-migration` — checking out
+`master` is what brings it back, and `master` still carries the full pre-migration
+config. Do not try this from the migration branch.
 
 Everything is still in /nix/store — fast, offline. Do NOT run darwin-rebuild from
 master casually while on mise (it re-activates home-manager on top of mise links).

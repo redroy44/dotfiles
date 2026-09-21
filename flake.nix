@@ -79,12 +79,7 @@
           }];
           inputs = { inherit darwin nixpkgs; };
         };
-        # mise migration: home-manager removed — tools & dotfiles now come from mise.toml
-        macbook-pro-16 = darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          modules = [ ./nixpkgs/darwin/macbook-pro-16/configuration.nix ];
-          inputs = { inherit darwin nixpkgs; };
-        };
+        # macbook-pro-16 migrated to mise (see README + HANDOFF.md); nix removed.
       };
     };
 }
