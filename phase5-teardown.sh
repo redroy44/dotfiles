@@ -22,7 +22,10 @@ if [[ -e /run/current-system ]]; then
   echo "FAIL: /run/current-system still exists — run darwin-uninstaller first" >&2
   exit 1
 fi
-for p in activate-system darwin-store nix-optimise; do
+# Only these two are nix-darwin's. org.nixos.darwin-store.plist is the *installer's*
+# volume mounter (`diskutil mount /nix <uuid>`) and must survive until step 8
+# deletes the volume, so it is deliberately not checked here.
+for p in activate-system nix-optimise; do
   if [[ -e "/Library/LaunchDaemons/org.nixos.$p.plist" ]]; then
     echo "FAIL: org.nixos.$p.plist still present — darwin-uninstaller did not finish" >&2
     exit 1
@@ -35,34 +38,29 @@ if ! sudo -u "$SUDO_USER" zsh -lic 'command -v /usr/bin/env' >/dev/null 2>&1; th
   exit 1
 fi
 
-# --- 1. TouchID sudo, first, to keep the gap short -----------------------
-# NOT via `mise bootstrap files apply`: under sudo $HOME is /var/root, so mise
-# reads no config and reports success having written nothing.
-say "TouchID sudo → /etc/pam.d/sudo_local"
-if [[ -f /etc/pam.d/sudo_local && ! -L /etc/pam.d/sudo_local ]] \
-   && grep -q pam_tid /etc/pam.d/sudo_local; then
-  skip "real file with pam_tid"
-else
-  rm -f /etc/pam.d/sudo_local
-  printf 'auth       sufficient     pam_tid.so\n' > /etc/pam.d/sudo_local
-  chmod 0444 /etc/pam.d/sudo_local
-fi
+# --- 1. root-owned OS settings, including TouchID sudo -------------------
+# darwin-uninstaller deletes /etc/pam.d/sudo_local outright, so TouchID sudo is
+# broken from the moment it finishes until this runs. Do it first.
+say "root-owned OS settings"
+"$(cd "$(dirname "$0")" && pwd)/bootstrap-sudo.sh"
 
-# --- 2. shell files back to their pre-nix originals ----------------------
-# darwin-uninstaller restores *.before-nix-darwin (= the nix-installer version).
-# *.backup-before-nix is the pristine Apple file underneath that.
-say "restore /etc shell files"
-for f in zshrc bashrc; do
-  if [[ -f "/etc/$f.backup-before-nix" ]]; then
-    mv -f "/etc/$f" "/etc/$f.pre-teardown.$(date +%s)" 2>/dev/null || true
-    cp -p "/etc/$f.backup-before-nix" "/etc/$f"
-    echo "    restored /etc/$f"
+# --- 2. check the restored /etc shell files ------------------------------
+# NOT a restore. Verified 2026-09-22: darwin-uninstaller already leaves
+# /etc/{zshrc,bashrc,zprofile} clean, with zero nix references, and they are the
+# *current* macOS files. Copying *.backup-before-nix over them would be a
+# regression — that backup is a 2024-vintage Apple zshrc, two releases stale.
+say "check /etc shell files are nix-free"
+for f in zshrc bashrc zprofile; do
+  if [[ ! -e "/etc/$f" ]]; then
+    echo "    WARN /etc/$f missing" >&2
+  elif grep -qi nix "/etc/$f"; then
+    echo "    WARN /etc/$f still mentions nix — inspect by hand" >&2
+    grep -ni nix "/etc/$f" >&2
   else
-    skip "/etc/$f has no .backup-before-nix"
+    echo "    ok   /etc/$f"
   fi
 done
-# /etc/zshenv is a nix-darwin invention; macOS ships none, so there is nothing
-# to restore — it just goes.
+# /etc/zshenv is a nix-darwin invention; macOS ships none, so nothing to restore.
 if [[ -e /etc/zshenv ]]; then rm -f /etc/zshenv; echo "    removed /etc/zshenv"; else skip "/etc/zshenv"; fi
 
 # --- 3. nix daemon -------------------------------------------------------
@@ -122,10 +120,15 @@ if diskutil info "$NIX_VOLUME_UUID" >/dev/null 2>&1; then
   printf '\nThis erases the volume. There is no undo. Type DELETE to continue: '
   read -r reply
   if [[ $reply == DELETE ]]; then
+    # The mounter must go first, or it remounts the volume at every boot and
+    # logs a failure forever once the volume is gone.
+    launchctl bootout system/org.nixos.darwin-store 2>/dev/null || true
+    rm -f /Library/LaunchDaemons/org.nixos.darwin-store.plist
     diskutil unmountDisk force "$NIX_VOLUME_UUID" || true
     diskutil apfs deleteVolume "$NIX_VOLUME_UUID"
   else
     echo "    skipped — volume left in place, everything else is done"
+    echo "    (org.nixos.darwin-store.plist kept too; it mounts this volume)"
   fi
 else
   skip "volume $NIX_VOLUME_UUID"
