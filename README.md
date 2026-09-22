@@ -80,21 +80,47 @@ Not worth it; most of these casks self-update anyway.
 `mise.lock` pins versions and checksums for everything in `[tools]`. It is the
 `flake.lock` successor and it is committed.
 
+There is **one** lockfile and it lives in this repo. `~/.config/mise/config.toml`
+is a symlink to `mise.toml` here, and the mise docs say the lockfile belongs next
+to the symlink target — so `~/.config/mise/mise.lock` should not exist.
+
 ```sh
+cd ~/repos/dotfiles
 mise lock --global           # refresh every tool
 mise lock --global <tool>    # one tool
 ```
 
-`[settings] lockfile_platforms = ["macos-arm64"]` in `mise.toml` scopes this, so
-no `--platform` flag is needed. Without that setting `mise lock` resolves every
-platform it knows about and sweeps hundreds of linux/musl/windows/x64 entries into
-the lockfile of an Apple-Silicon-only config.
+### Run it from this directory
 
-The setting only governs what mise resolves *next*; it does not prune entries
-already in the file. `mise.lock` still carries ~450 stale foreign-platform entries
-from before it was set — 91% of the file. Clearing them needs
-`mise lock --global --upgrade` (lockfile format v2), which currently fails with
-`Python dependency locks require uv >= 0.12.10`. Run `mise up uv` first.
+`mise lock --global` resolves its target from the current directory, contrary to
+the docs:
+
+| cwd | writes to |
+|---|---|
+| `~/repos/dotfiles` | `~/repos/dotfiles/mise.lock` ✅ |
+| anywhere else | `~/.config/mise/mise.lock` ❌ |
+
+Running it from `$HOME` creates a **second** lockfile that mise then prefers over
+this one. The two drift apart and you get different tool versions depending on
+which directory you are standing in — `mise ls --current` reported atuin 18.20.1
+from `~` and 18.22.0 from the repo, off the same config file. If that file ever
+reappears, delete it; the repo copy is the only one that should exist.
+
+(mise 2026.9.12. Worth an upstream issue — the docs describe the dotfiles-symlink
+case as supported and say cwd should not matter.)
+
+### Platforms
+
+`[settings] lockfile_platforms = ["macos-arm64"]` in `mise.toml` scopes resolution,
+so no `--platform` flag is needed. Without it `mise lock` resolves every platform it
+knows about and sweeps hundreds of linux/musl/windows/x64 entries into the lockfile
+of an Apple-Silicon-only config.
+
+The setting only governs what mise resolves *next* — it does not prune what is
+already there. `mise lock --global --upgrade` (lockfile format v2) does that; it
+took this file from 4534 lines to 1615. Some foreign-platform entries still remain,
+and the file is still `lockfile_version = 1`, because the upgrade stops at
+`Python dependency locks require uv >= 0.12.10`. Finish it after a `mise up uv`.
 
 `mise up` maintains the lockfile on its own, so a manual `mise lock` is only for
 repairing drift. If a partial edit ever leaves an orphaned
