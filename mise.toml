@@ -26,6 +26,10 @@ url = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 
 [settings]
 lockfile = true
+# Apple Silicon only. Without this, `mise lock` resolves every platform it knows
+# and sweeps ~450 linux/musl/windows/x64 entries into the lockfile — 91% of the
+# file was that noise before it was set.
+lockfile_platforms = ["macos-arm64"]
 
 [tools]
 # languages / runtimes (pins match previous nix versions)

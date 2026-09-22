@@ -81,13 +81,20 @@ Not worth it; most of these casks self-update anyway.
 `flake.lock` successor and it is committed.
 
 ```sh
-mise lock --global --platform macos-arm64            # refresh every tool
-mise lock --global --platform macos-arm64 <tool>     # one tool
+mise lock --global           # refresh every tool
+mise lock --global <tool>    # one tool
 ```
 
-**Always pass `--platform`.** Without it `mise lock` resolves every platform it
-knows about and sweeps roughly 180 windows/linux/baseline entries — about 1570
-lines — into the lockfile of an Apple-Silicon-only config.
+`[settings] lockfile_platforms = ["macos-arm64"]` in `mise.toml` scopes this, so
+no `--platform` flag is needed. Without that setting `mise lock` resolves every
+platform it knows about and sweeps hundreds of linux/musl/windows/x64 entries into
+the lockfile of an Apple-Silicon-only config.
+
+The setting only governs what mise resolves *next*; it does not prune entries
+already in the file. `mise.lock` still carries ~450 stale foreign-platform entries
+from before it was set — 91% of the file. Clearing them needs
+`mise lock --global --upgrade` (lockfile format v2), which currently fails with
+`Python dependency locks require uv >= 0.12.10`. Run `mise up uv` first.
 
 `mise up` maintains the lockfile on its own, so a manual `mise lock` is only for
 repairing drift. If a partial edit ever leaves an orphaned
