@@ -3,12 +3,15 @@
 Branch: `mise-migration` (master untouched = full rollback path).
 Scope: **mbp16 only**. mbp14 + zp stay on nix for now. Old x86 MBP: ignored permanently.
 
-## Status: Phase 4 of 5 complete ✅ · phase 4b activated 2026-09-08 (gen 101)
+## Status: COMPLETE ✅ — nix removed from mbp16 on 2026-09-22
 
-mbp16 runs on mise: tools from `mise.toml`, dotfiles symlinked from `dotfiles/`,
-home-manager removed from the flake. Casks, Mac App Store apps and macOS defaults
-are now declared in `mise.toml` too — but nix-darwin is still *installed* and still
-the thing that actually applied the defaults. Phase 5 removes it.
+mbp16 runs on mise alone. nix and nix-darwin are gone: no `/nix` volume, no daemon,
+no build users, no `/etc` management. `mise bootstrap --dry-run` converges on every
+phase with no warnings — including `system files`, which mise could not touch until
+nix-darwin released `/etc/pam.d/sudo_local`.
+
+**This document is now history, not a plan.** The live instructions are in
+`README.md`. mbp14 and zp are still nix machines and still use `flake.nix`.
 
 | Commit | What |
 |---|---|
@@ -256,9 +259,9 @@ be checked after the volume is gone.
   Enable and block-all are two separate setters; `--getglobalstate` only *prints*
   "State = 2" because it folds block-all into its own report.
 
-### Steps
+### Steps — all done 2026-09-22
 
-1. `darwin-uninstaller` (nix-darwin) — restores /etc shell files it manages.
+1. ✅ `darwin-uninstaller` (nix-darwin) — restores /etc shell files it manages.
 1b. Immediately after: `mise bootstrap files apply` to write the real
    `/etc/pam.d/sudo_local` (TouchID sudo). This only becomes possible once
    darwin-uninstaller has dropped nix-darwin's /etc management — dropping the
@@ -285,7 +288,53 @@ be checked after the volume is gone.
    (Side note: nix-darwin deprecating `system.defaults.alf.globalstate` in favour of
    `networking.applicationFirewall.*` is the same legacy-key trap described in the
    pre-flight above.)
-4. Point of no return — after this, rollback = reinstall nix + rebuild from master history.
+4. ✅ Point of no return — passed. Rollback now means reinstalling nix and rebuilding
+   from `master` history.
+
+### What actually happened
+
+Both sudo steps ran clean apart from two script bugs, both found by checking real
+state instead of trusting the plan:
+
+- **`vifs` does not quote-process `$EDITOR`.** `EDITOR="sed -i '' '/UUID/d'" vifs`
+  arrives as literal `''` arguments and dies with `vifs: editing error`. It needs a
+  real executable script. `/etc/fstab` was never corrupted — vifs refused the edit.
+- **The `/etc` restore step was a regression** and was deleted. darwin-uninstaller
+  already leaves `zshrc`/`bashrc`/`zprofile` nix-free and *current*; copying
+  `*.backup-before-nix` over them would have installed a 2024-vintage Apple zshrc.
+- `org.nixos.darwin-store.plist` is the **installer's** volume mounter, not
+  nix-darwin's. It must outlive the uninstaller and be removed with the volume, or
+  it retries the mount at every boot forever.
+
+Also swept afterwards: `~/.cache/nix` (271 MB) and `~/.local/state/nix`.
+
+There is **no uninstaller** for the classic upstream macOS nix installer — checked,
+no `/nix/receipt.json`, no `/nix/nix-installer`. `phase5-teardown.sh` is the manual
+procedure from the manual with this machine's volume UUID baked in. Determinate
+Systems' installer does ship `nix-installer uninstall`; prefer it if nix is ever
+installed again, e.g. on mbp14.
+
+### Verified after the reboot
+
+| | |
+|---|---|
+| `/nix`, `/run`, `/etc/synthetic.conf` | gone |
+| `Nix Store` APFS volume | gone; 95 GB free, was 48 GB |
+| `/etc/fstab`, `/Library/LaunchDaemons` | no nix entries |
+| `./bootstrap-sudo.sh --check` | all 5 correct, TouchID included |
+| `mise bootstrap --dry-run` | every phase converged, zero warnings |
+| tools | nvim, rg, starship, atuin all resolve to mise installs |
+
+### Left to do
+
+- **mbp14 does not evaluate** on nix-darwin 25.11 — three options removed upstream
+  still in its config (`services.nix-daemon.enable`,
+  `system.defaults.alf.globalstate`, `security.pam.enableSudoTouchIdAuth`). Pre-dates
+  this work. Fix it *on mbp14*; mbp16 can no longer build it.
+- Merge `mise-migration` into `master`. Keeping master as a rollback point stopped
+  meaning anything the moment the volume was deleted.
+- `phase5-teardown.sh` has done its job here. It is kept only as a starting point if
+  mbp14 ever migrates — its volume UUID is hardcoded and machine-specific.
 
 ## Rollback (valid until Phase 5)
 
