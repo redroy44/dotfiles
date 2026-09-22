@@ -19,19 +19,33 @@ chk() { # chk <label> <want> <got>
 
 read_default() { defaults read "$1" "$2" 2>/dev/null || echo unset; }
 
+# Echo on/off/error. An empty or failed socketfilterfw call must never fall
+# through to "on" — that would report a disabled firewall as correct.
+fw_state() { # fw_state <flag> <on-pattern>
+  local out
+  out=$("$FW" "$1" 2>/dev/null) || { echo error; return; }
+  [[ -n $out ]] || { echo error; return; }
+  if grep -qiE "$2" <<<"$out"; then echo on; else echo off; fi
+}
+
+# An active line only — a commented-out pam_tid is not TouchID sudo.
+has_touchid() {
+  [[ -f /etc/pam.d/sudo_local && ! -L /etc/pam.d/sudo_local ]] &&
+    grep -qE '^[[:space:]]*auth[[:space:]]+sufficient[[:space:]]+pam_tid\.so' \
+      /etc/pam.d/sudo_local
+}
+
 check() {
   echo "root-owned settings:"
   # Firewall state must come from socketfilterfw, NOT from `defaults read
   # com.apple.alf globalstate`. That plist is a 60-byte legacy stub still
   # reading 1 on a machine whose firewall is on and blocking all incoming.
-  chk "firewall enabled" on \
-    "$($FW --getglobalstate | grep -qi 'disabled' && echo off || echo on)"
-  chk "block all incoming" on \
-    "$($FW --getblockall | grep -qi 'blocking all' && echo on || echo off)"
+  chk "firewall enabled"   on "$(fw_state --getglobalstate 'State = [12]')"
+  chk "block all incoming" on "$(fw_state --getblockall 'blocking all')"
   chk "guest account disabled"    0 "$(read_default /Library/Preferences/com.apple.loginwindow GuestEnabled)"
   chk "auto-install macOS updates" 1 "$(read_default /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates)"
 
-  if [[ -f /etc/pam.d/sudo_local && ! -L /etc/pam.d/sudo_local ]] && grep -q pam_tid /etc/pam.d/sudo_local; then
+  if has_touchid; then
     chk "TouchID sudo" present present
   else
     # A symlink here means nix-darwin still owns the path — see HANDOFF.md.
@@ -67,8 +81,21 @@ defaults write /Library/Preferences/com.apple.SoftwareUpdate \
 # nothing while reporting success.
 if [[ -L /etc/pam.d/sudo_local ]]; then
   echo "SKIP TouchID: /etc/pam.d/sudo_local is a symlink (nix-darwin still owns it)" >&2
+elif has_touchid; then
+  :   # already correct
 else
-  printf 'auth       sufficient     pam_tid.so\n' > /etc/pam.d/sudo_local
+  # The file may carry unrelated admin PAM rules. Keep a copy before writing,
+  # and prepend rather than truncate so those rules survive — pam_tid must come
+  # first to be reached.
+  if [[ -s /etc/pam.d/sudo_local ]]; then
+    bak=/etc/pam.d/sudo_local.bak.$(date +%s)
+    cp -p /etc/pam.d/sudo_local "$bak"
+    echo "    kept existing rules, backup at $bak"
+    { printf 'auth       sufficient     pam_tid.so\n'; cat "$bak"; } \
+      > /etc/pam.d/sudo_local
+  else
+    printf 'auth       sufficient     pam_tid.so\n' > /etc/pam.d/sudo_local
+  fi
   chmod 0444 /etc/pam.d/sudo_local
 fi
 

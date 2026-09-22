@@ -33,8 +33,10 @@ for p in activate-system nix-optimise; do
 done
 
 # Confirm the shell survives before we delete the only copy of the store.
-if ! sudo -u "$SUDO_USER" zsh -lic 'command -v /usr/bin/env' >/dev/null 2>&1; then
-  echo "FAIL: a login zsh cannot find /usr/bin — check /etc/zprofile path_helper" >&2
+# Bare name on purpose: `command -v /usr/bin/env` would only prove that path is
+# executable, which it always is. Resolving `env` exercises PATH itself.
+if ! sudo -u "$SUDO_USER" zsh -lic 'command -v env' >/dev/null 2>&1; then
+  echo "FAIL: a login zsh has no /usr/bin in PATH — check /etc/zprofile path_helper" >&2
   exit 1
 fi
 
@@ -141,7 +143,10 @@ if diskutil info "$NIX_VOLUME_UUID" >/dev/null 2>&1; then
     # logs a failure forever once the volume is gone.
     launchctl bootout system/org.nixos.darwin-store 2>/dev/null || true
     rm -f /Library/LaunchDaemons/org.nixos.darwin-store.plist
-    diskutil unmountDisk force "$NIX_VOLUME_UUID" || true
+    # `unmountDisk` resolves to the whole physical disk and would try to
+    # force-unmount every volume on it, including the system volume. Scope to
+    # this volume only.
+    diskutil unmount force "$NIX_VOLUME_UUID" || true
     diskutil apfs deleteVolume "$NIX_VOLUME_UUID"
   else
     echo "    skipped — volume left in place, everything else is done"
