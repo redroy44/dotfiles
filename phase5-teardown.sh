@@ -96,11 +96,28 @@ if [[ -f /etc/synthetic.conf ]] && grep -qE '^nix$' /etc/synthetic.conf; then
 else
   skip "synthetic.conf nix line"
 fi
+# The installer's own BSD-sed footgun: `sed -i -E` treats -E as the backup
+# suffix, so a stale synthetic.conf-E gets left behind. Not ours, but ours to sweep.
+rm -f /etc/synthetic.conf-E
 
 # --- 6. fstab, via vifs as the file's own banner demands -----------------
 say "drop the /nix mount from /etc/fstab"
 if grep -q "$NIX_VOLUME_UUID" /etc/fstab 2>/dev/null; then
-  EDITOR="sed -i '' '/$NIX_VOLUME_UUID/d'" vifs
+  # vifs execs $EDITOR without shell quote processing, so an inline
+  # EDITOR="sed -i '' ..." arrives as literal '' args and vifs reports
+  # "editing error". Hand it a real script instead.
+  ed=$(mktemp)
+  printf '#!/bin/sh\nexec /usr/bin/sed -i "" "/%s/d" "$1"\n' "$NIX_VOLUME_UUID" > "$ed"
+  chmod +x "$ed"
+  if EDITOR="$ed" vifs; then
+    echo "    removed"
+  else
+    # A leftover entry is noauto, so nothing mounts it and boot is unaffected.
+    # Not worth aborting the run over — say so and keep going.
+    echo "    WARN vifs failed. Harmless (the entry is noauto), but to clear it:" >&2
+    echo "         sudo vifs   # then delete the line naming $NIX_VOLUME_UUID" >&2
+  fi
+  rm -f "$ed"
 else
   skip "fstab entry"
 fi
